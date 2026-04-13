@@ -589,14 +589,15 @@ function getMinReservationDate(){
   return addBusinessDays(today,5);
 }
 function dateToStr(d){
-  return d.toISOString().split('T')[0];
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
 }
 function isValidReservationDate(dateStr){
   if(!dateStr) return false;
-  const selected = new Date(dateStr+'T12:00:00');
-  const minDate  = getMinReservationDate();
-  minDate.setHours(0,0,0,0);
-  return selected >= minDate;
+  const minDate = dateToStr(getMinReservationDate());
+  return dateStr >= minDate;
 }
 
 // ════════════════════════════════════════
@@ -720,7 +721,7 @@ function renderSidebar(lab){
   const dateBanner=dateSet&&!dateValid
     ?`<div class="banner banner-red"><strong>⛔ Fecha no permitida</strong>Las reservas deben hacerse con mínimo 5 días hábiles de anticipación. La fecha mínima disponible es ${fmtDate(minDate)}.</div>`:'';
 
-  const canSave=!blocked&&(!dateSet||dateValid)&&dateSet;
+  const canSave = dateSet && dateValid && !blocked && f.teacher && f.startTime && f.endTime;
 
   document.getElementById('sidebar-'+lab).innerHTML=`
     <div class="card">
@@ -1092,3 +1093,4 @@ init();
 </script>
 </body>
 </html>
+
