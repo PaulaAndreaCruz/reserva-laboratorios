@@ -807,9 +807,9 @@ function setModalCat(cat,el){
 
 function renderModalList(){
   const q=document.getElementById('modal-search').value.toLowerCase();
-  const usedIds=Object.values(assignments[modalPC.lab]).map(s=>s.id);
+  const usedIds=Object.values(assignments[modalPC.lab]).map(s=>s._id||s.id);
   let filtered=students.filter(s=>
-    !usedIds.includes(s.id)&&
+    !usedIds.includes(s._id||s.id)&&
     (!modalCatFilter||s.category===modalCatFilter)&&
     (s.name.toLowerCase().includes(q)||s.group_name.toLowerCase().includes(q))
   );
@@ -818,14 +818,14 @@ function renderModalList(){
     return;
   }
   document.getElementById('modal-list').innerHTML=filtered.map(s=>`
-    <div class="s-item ${modalPicked&&modalPicked.id===s.id?'picked':''}" onclick="pickStudent(${s.id})">
+    <div class="s-item ${modalPicked&&(modalPicked._id||modalPicked.id)===(s._id||s.id)?'picked':''}" onclick="pickStudent('${s._id||s.id}')">
       <span class="s-name">${s.name}</span>
       <span class="s-group">${s.group_name}</span>
       <span class="s-tag ${CAT_TAG_CLASS[s.category]||''}">${CAT_LABELS[s.category]||s.category}</span>
     </div>`).join('');
 }
 
-function pickStudent(id){modalPicked=students.find(s=>s.id===id);renderModalList();}
+function pickStudent(id){modalPicked=students.find(s=>(s._id||s.id)==id);renderModalList();}
 
 function confirmStudent(){
   if(!modalPicked||!modalPC) return;
@@ -981,14 +981,14 @@ function renderAdminTable(){
         <td><span class="s-tag ${CAT_TAG_CLASS[s.category]||''}">${CAT_LABELS[s.category]||s.category}</span></td>
         <td><span class="grade-badge">${s.group_name}</span></td>
         <td style="text-align:center">
-          <button class="btn-edit" onclick="openEditModal(${s.id})" title="Editar">✏️</button>
-          <button class="btn-del"  onclick="removeStudent(${s.id})" title="Eliminar">✕</button>
+          <button class="btn-edit" onclick="openEditModal('${s._id||s.id}')" title="Editar">✏️</button>
+          <button class="btn-del"  onclick="removeStudent('${s._id||s.id}')" title="Eliminar">✕</button>
         </td>
       </tr>`).join('')}</tbody>
     </table>`;
 }
 function openEditModal(id){
-  const s=students.find(s=>s.id===id);
+  const s=students.find(s=>(s._id||s.id)===id);
   if(!s) return;
   editingId=id;
   document.getElementById('edit-name').value=s.name;
@@ -1006,18 +1006,18 @@ async function saveEdit(){
   if(!name||!group_name){showToast('Nombre y grupo son obligatorios');return;}
   try{
     const updated=await api('PUT','/api/students/'+editingId,{name,category,group_name,email});
-    const idx=students.findIndex(s=>s.id===editingId);
+    const idx=students.findIndex(s=>(s._id||s.id)===editingId);
     if(idx!==-1) students[idx]=updated;
     students.sort((a,b)=>a.name.localeCompare(b.name));
     closeEditModal(); renderAdminTable(); showToast('✅ Estudiante actualizado');
   }catch(e){showToast(e.message);}
 }
 async function removeStudent(id){
-  const s=students.find(s=>s.id===id);
+  const s=students.find(s=>(s._id||s.id)===id);
   if(!s||!confirm('¿Eliminar a '+s.name+'?')) return;
   try{
     await api('DELETE','/api/students/'+id);
-    students=students.filter(s=>s.id!==id);
+    students=students.filter(s=>(s._id||s.id)!==id);
     renderAdminTable(); showToast(s.name+' eliminado');
   }catch(e){showToast(e.message);}
 }
