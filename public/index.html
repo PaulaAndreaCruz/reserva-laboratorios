@@ -613,6 +613,9 @@ async function init(){
     renderSidebar('hs');
     renderSidebar('ms');
     renderSidebar('primary');
+    updateSaveButton('hs');
+    updateSaveButton('ms');
+    updateSaveButton('primary');
     renderAdminTable();
     renderBlocks();
     loadConfig();
@@ -766,32 +769,30 @@ function renderSidebar(lab){
       <div class="form-row"><label>Equipos asignados</label>
         <div class="sel-info">${selHtml}</div>
       </div>
-      <button class="btn btn-primary" id="btn-save-${lab}" ${!canSave?'disabled':''} onclick="saveReservation('${lab}')">
+      <button class="btn btn-primary" id="btn-save-${lab}" onclick="saveReservation('${lab}')">
         Guardar reserva
       </button>
     </div>`;
 }
 
 function updateSaveButton(lab){
-  const f=form[lab];
-  const dateSet=!!f.date;
-  const dateValid=isValidReservationDate(f.date);
-  const blocked=isBlocked(lab,f.date,f.startTime,f.endTime);
-  const canSave=dateSet&&dateValid&&!blocked&&!!f.teacher&&!!f.startTime&&!!f.endTime;
-  const btn=document.getElementById('btn-save-'+lab);
-  if(btn) btn.disabled=!canSave;
-  // update banner
-  const bannerEl=document.getElementById('date-banner-'+lab);
-  if(bannerEl){
-    if(dateSet&&!dateValid){
-      const minDate=dateToStr(getMinReservationDate());
-      bannerEl.innerHTML=`<div class="banner banner-red"><strong>⛔ Fecha no permitida</strong>Mínimo 5 días hábiles de anticipación. Fecha mínima: ${fmtDate(minDate)}</div>`;
-    } else if(blocked){
-      bannerEl.innerHTML=`<div class="banner banner-amber"><strong>⚠ Horario bloqueado por clase</strong>El ${DAYS[blocked.day]} de ${blocked.start_time} a ${blocked.end_time} está reservado.</div>`;
-    } else {
-      bannerEl.innerHTML='';
+  try{
+    const f=form[lab];
+    if(!f) return;
+    const dateSet=f.date&&f.date.length>0;
+    const dateValid=dateSet?isValidReservationDate(f.date):false;
+    const blocked=isBlocked(lab,f.date,f.startTime,f.endTime);
+    const hasTeacher=f.teacher&&f.teacher.trim().length>0;
+    const hasStart=f.startTime&&f.startTime.length>0;
+    const hasEnd=f.endTime&&f.endTime.length>0;
+    const canSave=dateSet&&dateValid&&!blocked&&hasTeacher&&hasStart&&hasEnd;
+    const btn=document.getElementById("btn-save-"+lab);
+    if(btn){
+      btn.disabled=!canSave;
+      btn.style.opacity=canSave?"1":"0.45";
+      btn.style.cursor=canSave?"pointer":"not-allowed";
     }
-  }
+  }catch(e){ console.log("updateSaveButton error:",e); }
 }
 
 // ════════════════════════════════════════
@@ -1115,4 +1116,3 @@ init();
 </script>
 </body>
 </html>
-
