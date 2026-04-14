@@ -713,7 +713,7 @@ async function addBlock(){
 async function removeBlock(id){
   try{
     await api('DELETE','/api/schedules/'+id);
-    blockedSchedules=blockedSchedules.filter(b=>b.id!==id);
+    blockedSchedules=blockedSchedules.filter(b=>(b._id||b.id)!==id);
     renderBlocks();
     ['hs','ms','primary'].forEach(l=>renderSidebar(l));
   }catch(e){showToast(e.message);}
@@ -729,7 +729,7 @@ function renderBlocks(){
     blocks.forEach(b=>{
       html+=`<div class="block-chip">
         <span>${DAYS[b.day]} &nbsp;${b.start_time} – ${b.end_time}</span>
-        <button onclick="removeBlock(${b.id})" title="Eliminar">✕</button>
+        <button onclick="removeBlock('${b._id||b.id}')" title="Eliminar">✕</button>
       </div>`;
     });
     html+=`</div></div>`;
