@@ -741,30 +741,30 @@ function renderSidebar(lab){
       ${blockedBanner}${dateBanner}<div id="date-banner-${lab}"></div>
       <div class="form-row"><label>Profesor</label>
         <input type="text" placeholder="Nombre del profesor" value="${f.teacher}"
-          oninput="form['${lab}'].teacher=this.value"/>
+          oninput="setForm('${lab}','teacher',this.value)"/>
       </div>
       <div class="form-row"><label>Correo del profesor</label>
         <input type="email" placeholder="profesor@colegio.edu" value="${f.teacherEmail}"
-          oninput="form['${lab}'].teacherEmail=this.value"/>
+          oninput="setForm('${lab}','teacherEmail',this.value)"/>
       </div>
       <div class="form-row"><label>Fecha <span style="font-size:11px;color:var(--text3);">(mín. ${fmtDate(minDate)})</span></label>
         <input type="date" value="${f.date}" min="${minDate}"
-          oninput="form['${lab}'].date=this.value; renderSidebar('${lab}')"/>
+          oninput="setForm('${lab}','date',this.value)"/>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
         <div><label style="display:block;font-size:12px;color:var(--text2);font-weight:700;margin-bottom:4px;">Inicio</label>
-          <input type="time" value="${f.startTime}" oninput="form['${lab}'].startTime=this.value;renderSidebar('${lab}')"/>
+          <input type="time" value="${f.startTime}" oninput="setForm('${lab}','startTime',this.value)"/>
         </div>
         <div><label style="display:block;font-size:12px;color:var(--text2);font-weight:700;margin-bottom:4px;">Fin</label>
-          <input type="time" value="${f.endTime}" oninput="form['${lab}'].endTime=this.value;renderSidebar('${lab}')"/>
+          <input type="time" value="${f.endTime}" oninput="setForm('${lab}','endTime',this.value)"/>
         </div>
       </div>
       <div class="form-row"><label>Materia</label>
         <input type="text" placeholder="Ej. Tecnología, Ingeniería..." value="${f.subject}"
-          oninput="form['${lab}'].subject=this.value"/>
+          oninput="setForm('${lab}','subject',this.value)"/>
       </div>
       <div class="form-row"><label>Tema a abarcar</label>
-        <textarea placeholder="Describe el tema o actividad que se desarrollará en la sesión..." oninput="form['${lab}'].topic=this.value">${f.topic}</textarea>
+        <textarea placeholder="Describe el tema o actividad que se desarrollará en la sesión..." oninput="setForm('${lab}','topic',this.value)">${f.topic}</textarea>
       </div>
       <div class="form-row"><label>Equipos asignados</label>
         <div class="sel-info">${selHtml}</div>
@@ -773,6 +773,12 @@ function renderSidebar(lab){
         Guardar reserva
       </button>
     </div>`;
+}
+
+function setForm(lab, field, value){
+  if(!form[lab]) return;
+  form[lab][field] = value;
+  updateSaveButton(lab);
 }
 
 function updateSaveButton(lab){
@@ -1116,3 +1122,5 @@ init();
 </script>
 </body>
 </html>
+
+
