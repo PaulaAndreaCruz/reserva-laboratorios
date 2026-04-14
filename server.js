@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express    = require('express');
 const mongoose   = require('mongoose');
-const nodemailer = require('nodemailer');
+const https = require('https');
 const path       = require('path');
  
 const app  = express();
@@ -89,7 +89,8 @@ async function getConfig() {
 // ══════════════════════════════════════════════════
 async function sendNotification(reservation, seats) {
   const cfg = await getConfig();
-  if (!cfg.smtp_user || !cfg.smtp_pass) return { sent: false, reason: 'SMTP no configurado' };
+  const resendKey = process.env.RESEND_API_KEY || '';
+  if (!resendKey) return { sent: false, reason: 'RESEND_API_KEY no configurada' };
  
   const labAdminEmails = {
     hs: cfg.admin_hs_email, ms: cfg.admin_ms_email, primary: cfg.admin_primary_email
@@ -186,23 +187,39 @@ app.post('/api/config', async (req, res) => {
 });
  
 app.post('/api/config/test-email', async (req, res) => {
+  const resendKey = process.env.RESEND_API_KEY || '';
+  if (!resendKey) return res.status(400).json({ error: 'RESEND_API_KEY no configurada en Render' });
   const cfg = await getConfig();
-  if (!cfg.smtp_user || !cfg.smtp_pass)
-    return res.status(400).json({ error: 'Configura el correo primero' });
+  const to = cfg.admin_email || cfg.smtp_user;
+  if (!to) return res.status(400).json({ error: 'Configura al menos el correo del administrador' });
   try {
-    const t = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    requireTLS: true,
-    auth: { user: cfg.smtp_user, pass: cfg.smtp_pass },
-    tls: { rejectUnauthorized: false }
-  });
-    await t.sendMail({
-      from: `"Reserva Laboratorios" <${cfg.smtp_user}>`,
-      to:   cfg.smtp_user,
-      subject: '✅ Prueba — Sistema de Reservas',
-      html: '<p style="font-family:Arial,sans-serif;">✅ Correo configurado correctamente.</p>'
+    const body = JSON.stringify({
+      from: 'Reserva Laboratorios <onboarding@resend.dev>',
+      to: [to],
+      subject: 'Prueba — Sistema de Reservas de Laboratorios',
+      html: '<p style="font-family:Arial,sans-serif;font-size:16px;">Correo de prueba enviado correctamente desde el Sistema de Reservas.</p>'
+    });
+    await new Promise((resolve, reject) => {
+      const req = https.request({
+        hostname: 'api.resend.com',
+        path: '/emails',
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendKey}`,
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(body)
+        }
+      }, (r) => {
+        let data = '';
+        r.on('data', chunk => data += chunk);
+        r.on('end', () => {
+          if (r.statusCode >= 200 && r.statusCode < 300) resolve(data);
+          else reject(new Error(`Resend ${r.statusCode}: ${data}`));
+        });
+      });
+      req.on('error', reject);
+      req.write(body);
+      req.end();
     });
     res.json({ ok: true });
   } catch(e) { res.status(400).json({ error: e.message }); }
