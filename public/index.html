@@ -547,6 +547,36 @@ const PC_IDS = {
   primary: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
 };
 const CAT_LABELS = {curso:'Curso', escuela:'Escuela', club:'Club'};
+
+// Bloques horarios por laboratorio
+const TIME_BLOCKS = {
+  hs: [
+    {id:'b1', label:'07:15 – 08:40', start:'07:15', end:'08:40'},
+    {id:'b2', label:'09:10 – 10:35', start:'09:10', end:'10:35'},
+    {id:'b3', label:'10:35 – 11:50', start:'10:35', end:'11:50'},
+    {id:'b4', label:'12:35 – 14:00', start:'12:35', end:'14:00'},
+    {id:'b5', label:'14:00 – 15:25', start:'14:00', end:'15:25'},
+    {id:'b6', label:'15:45 – 17:00', start:'15:45', end:'17:00'},
+    {id:'b7', label:'17:00 – 18:00', start:'17:00', end:'18:00'}
+  ],
+  ms: [
+    {id:'b1', label:'07:15 – 08:40', start:'07:15', end:'08:40'},
+    {id:'b2', label:'09:10 – 10:35', start:'09:10', end:'10:35'},
+    {id:'b3', label:'10:35 – 11:50', start:'10:35', end:'11:50'},
+    {id:'b4', label:'12:35 – 14:00', start:'12:35', end:'14:00'},
+    {id:'b5', label:'14:00 – 15:25', start:'14:00', end:'15:25'},
+    {id:'b6', label:'15:45 – 17:00', start:'15:45', end:'17:00'},
+    {id:'b7', label:'17:00 – 18:00', start:'17:00', end:'18:00'}
+  ],
+  primary: [
+    {id:'b1', label:'07:15 – 08:30', start:'07:15', end:'08:30'},
+    {id:'b2', label:'08:40 – 09:55', start:'08:40', end:'09:55'},
+    {id:'b3', label:'10:20 – 11:35', start:'10:20', end:'11:35'},
+    {id:'b4', label:'11:45 – 13:00', start:'11:45', end:'13:00'},
+    {id:'b5', label:'14:00 – 15:25', start:'14:00', end:'15:25'},
+    {id:'b6', label:'15:45 – 17:00', start:'15:45', end:'17:00'}
+  ]
+};
 const CAT_TAG_CLASS = {curso:'tag-curso', escuela:'tag-escuela', club:'tag-club'};
 const GROUP_PLACEHOLDERS = {
   curso:'Ej. 10° A, Grado 5B',
@@ -623,6 +653,9 @@ async function init(){
     updateSaveButton('hs');
     updateSaveButton('ms');
     updateSaveButton('primary');
+    renderBlocksSelector('hs');
+    renderBlocksSelector('ms');
+    renderBlocksSelector('primary');
     renderAdminTable();
     renderBlocks();
     loadConfig();
@@ -644,7 +677,7 @@ function switchTab(lab,el){
   else if(lab==='schedules') renderBlocks();
   else if(lab==='admin') renderAdminTable();
   else if(lab==='config') loadConfig();
-  else renderSidebar(lab);
+  else { renderSidebar(lab); setTimeout(()=>renderBlocksSelector(lab),50); }
 }
 
 // ════════════════════════════════════════
@@ -758,13 +791,12 @@ function renderSidebar(lab){
         <input type="date" value="${f.date}" min="${minDate}"
           data-lab="${lab}" data-field="date" oninput="handleFormInput(this)"/>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-        <div><label style="display:block;font-size:12px;color:var(--text2);font-weight:700;margin-bottom:4px;">Inicio</label>
-          <input type="time" value="${f.startTime}" data-lab="${lab}" data-field="startTime" oninput="handleFormInput(this)"/>
+      <div class="form-row">
+        <label>Bloque horario</label>
+        <div id="blocks-selector-${lab}" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+          <!-- Se llena dinámicamente -->
         </div>
-        <div><label style="display:block;font-size:12px;color:var(--text2);font-weight:700;margin-bottom:4px;">Fin</label>
-          <input type="time" value="${f.endTime}" data-lab="${lab}" data-field="endTime" oninput="handleFormInput(this)"/>
-        </div>
+        <p id="blocks-msg-${lab}" style="font-size:11px;color:var(--text3);margin-top:4px;"></p>
       </div>
       <div class="form-row"><label>Materia</label>
         <input type="text" placeholder="Ej. Tecnología, Ingeniería..." value="${f.subject}"
@@ -794,6 +826,81 @@ function handleFormInput(el){
 function setForm(lab, field, value){
   if(!form[lab]) return;
   form[lab][field] = value;
+  if(field==='date') renderBlocksSelector(lab);
+  updateSaveButton(lab);
+}
+
+function renderBlocksSelector(lab){
+  const f = form[lab];
+  const blocks = TIME_BLOCKS[lab] || [];
+  const dateSet = f.date && f.date.length > 0;
+  const container = document.getElementById('blocks-selector-'+lab);
+  const msg = document.getElementById('blocks-msg-'+lab);
+  if(!container) return;
+
+  if(!dateSet){
+    container.innerHTML = '<span style="font-size:12px;color:var(--text3);">Selecciona primero una fecha</span>';
+    if(msg) msg.textContent = '';
+    return;
+  }
+
+  // Calcular día de semana
+  const d = new Date(f.date+'T12:00:00');
+  const jsDay = d.getDay();
+  const dayIdx = jsDay===0?-1:jsDay-1;
+
+  // Reservas existentes ese día en ese lab
+  const existingThatDay = reservations.filter(r => r.lab===lab && r.date===f.date);
+
+  let html = '';
+  let availableCount = 0;
+  blocks.forEach(b => {
+    // Verificar si está bloqueado por clase
+    const blocked = (dayIdx>=0&&dayIdx<=4) ? blockedSchedules.find(bs =>
+      bs.lab===lab && Number(bs.day)===dayIdx &&
+      toMins(b.start) < toMins(bs.end_time) && toMins(b.end) > toMins(bs.start_time)
+    ) : null;
+
+    // Verificar si ya tiene una reserva
+    const reserved = existingThatDay.find(r =>
+      toMins(b.start) < toMins(r.end_time) && toMins(b.end) > toMins(r.start_time)
+    );
+
+    const isSelected = f.startTime===b.start && f.endTime===b.end;
+    const isUnavailable = blocked || reserved;
+
+    let style = 'padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:2px solid;transition:all .15s;';
+    let title = '';
+
+    if(isSelected){
+      style += 'background:var(--blue);color:#fff;border-color:var(--blue);';
+    } else if(blocked){
+      style += 'background:var(--amber-l);color:var(--amber);border-color:var(--amber-m);cursor:not-allowed;opacity:0.7;';
+      title = 'Bloqueado por clase';
+    } else if(reserved){
+      style += 'background:var(--red-l);color:var(--red);border-color:var(--red-m);cursor:not-allowed;opacity:0.7;';
+      title = 'Ya reservado: '+reserved.teacher;
+    } else {
+      style += 'background:var(--green-l);color:var(--green);border-color:var(--green-m);';
+      availableCount++;
+    }
+
+    const clickFn = isUnavailable ? '' : `onclick="selectBlock('${lab}','${b.start}','${b.end}')"`;
+    html += `<button style="${style}" title="${title}" ${clickFn}>${b.label}${blocked?' 🔒':reserved?' ❌':''}</button>`;
+  });
+
+  container.innerHTML = html;
+  if(msg){
+    if(availableCount===0 && dateSet) msg.textContent = 'No hay bloques disponibles para este día.';
+    else if(dayIdx<0) msg.textContent = 'Fin de semana — no hay bloques disponibles.';
+    else msg.textContent = availableCount+' bloque(s) disponible(s)';
+  }
+}
+
+function selectBlock(lab, start, end){
+  form[lab].startTime = start;
+  form[lab].endTime = end;
+  renderBlocksSelector(lab);
   updateSaveButton(lab);
 }
 
@@ -933,6 +1040,7 @@ async function saveReservation(lab){
     assignments[lab]={};
     form[lab]={teacher:'',teacherEmail:'',date:'',startTime:'',endTime:'',subject:'',topic:''};
     renderSidebar(lab);
+    renderBlocksSelector(lab);
     showToast('✅ Reserva guardada — correo enviado');
   }catch(e){showToast(e.message);}
 }
@@ -1229,4 +1337,5 @@ init();
 </script>
 </body>
 </html>
+
 
