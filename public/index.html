@@ -156,7 +156,7 @@ textarea{resize:vertical;min-height:70px;}
       <p>Tech Lab Bachillerato · Maker Space · Tech Lab Primaria</p>
     </div>
   </div>
-
+ 
   <div class="tabs">
     <button class="tab active" onclick="switchTab('hs',this)">Tech Lab Bachillerato</button>
     <button class="tab" onclick="switchTab('ms',this)">Maker Space</button>
@@ -166,7 +166,7 @@ textarea{resize:vertical;min-height:70px;}
     <button class="tab" onclick="switchTab('admin',this)">👥 Estudiantes</button>
     <button class="tab" onclick="switchTab('config',this)">⚙️ Config</button>
   </div>
-
+ 
   <!-- ════════════ TECH LAB BACHILLERATO — 26 PCs ════════════ -->
   <div id="view-hs" class="view active">
     <div class="lab-layout">
@@ -219,7 +219,7 @@ textarea{resize:vertical;min-height:70px;}
       <div class="sidebar" id="sidebar-hs"></div>
     </div>
   </div>
-
+ 
   <!-- ════════════ MAKER SPACE — 6 PCs ════════════ -->
   <div id="view-ms" class="view">
     <div class="lab-layout">
@@ -253,7 +253,7 @@ textarea{resize:vertical;min-height:70px;}
       <div class="sidebar" id="sidebar-ms"></div>
     </div>
   </div>
-
+ 
   <!-- ════════════ TECH LAB PRIMARIA — 22 PCs ════════════ -->
   <div id="view-primary" class="view">
     <div class="lab-layout">
@@ -303,7 +303,7 @@ textarea{resize:vertical;min-height:70px;}
       <div class="sidebar" id="sidebar-primary"></div>
     </div>
   </div>
-
+ 
   <!-- ════════════ REPORTE ════════════ -->
   <div id="view-report" class="view">
     <div class="card">
@@ -324,7 +324,7 @@ textarea{resize:vertical;min-height:70px;}
       <div style="overflow-x:auto;" id="rep-content"></div>
     </div>
   </div>
-
+ 
   <!-- ════════════ HORARIOS ════════════ -->
   <div id="view-schedules" class="view">
     <div class="card">
@@ -362,7 +362,7 @@ textarea{resize:vertical;min-height:70px;}
       <div id="blocks-display"></div>
     </div>
   </div>
-
+ 
   <!-- ════════════ ESTUDIANTES ════════════ -->
   <div id="view-admin" class="view">
     <div class="two-col">
@@ -385,7 +385,13 @@ textarea{resize:vertical;min-height:70px;}
           <div class="form-row"><label>Correo electrónico (opcional)</label>
             <input type="email" id="add-email" placeholder="estudiante@colegio.edu"/>
           </div>
-          <button class="btn btn-primary" onclick="addStudent()">Agregar estudiante</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <button class="btn btn-primary" onclick="addStudent()">Agregar estudiante</button>
+            <label style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--green-l);color:var(--green);border:2px solid var(--green-m);border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;" title="Importar desde Excel o CSV">
+              📥 Importar Excel/CSV
+              <input type="file" id="excel-import" accept=".xlsx,.xls,.csv" style="display:none;" onchange="importFromExcel(this)"/>
+            </label>
+          </div>
         </div>
         <div class="card" style="margin-top:1rem">
           <h3>Promoción / cambio masivo</h3>
@@ -424,7 +430,7 @@ textarea{resize:vertical;min-height:70px;}
       </div>
     </div>
   </div>
-
+ 
   <!-- ════════════ CONFIGURACIÓN ════════════ -->
   <div id="view-config" class="view">
     <div class="card">
@@ -466,7 +472,7 @@ textarea{resize:vertical;min-height:70px;}
       </div>
       <div id="config-msg" style="margin-top:12px;"></div>
     </div>
-
+ 
     <div class="card" style="margin-top:1rem">
       <h3>ℹ️ Instrucciones para Gmail</h3>
       <ol style="font-size:13px;color:var(--text2);line-height:2;padding-left:1.25rem;">
@@ -479,7 +485,7 @@ textarea{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
-
+ 
 <!-- Modal: asignar estudiante -->
 <div class="overlay" id="student-modal">
   <div class="modal">
@@ -504,7 +510,7 @@ textarea{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
-
+ 
 <!-- Modal: editar estudiante -->
 <div class="overlay" id="edit-modal">
   <div class="modal">
@@ -525,9 +531,9 @@ textarea{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
-
+ 
 <div class="toast" id="toast"></div>
-
+ 
 <script>
 // ════════════════════════════════════════
 // CONSTANTES
@@ -541,7 +547,7 @@ const PC_IDS = {
   primary: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
 };
 const CAT_LABELS = {curso:'Curso', escuela:'Escuela', club:'Club'};
-
+ 
 // Bloques horarios por laboratorio
 const TIME_BLOCKS = {
   hs: [
@@ -551,7 +557,8 @@ const TIME_BLOCKS = {
     {id:'b4', label:'12:35 – 14:00', start:'12:35', end:'14:00'},
     {id:'b5', label:'14:00 – 15:25', start:'14:00', end:'15:25'},
     {id:'b6', label:'15:45 – 17:00', start:'15:45', end:'17:00'},
-    {id:'b7', label:'17:00 – 18:00', start:'17:00', end:'18:00'}
+    {id:'b7', label:'17:00 – 18:00', start:'17:00', end:'18:00'},
+    {id:'b8', label:'08:00 – 12:00 (Sábado)', start:'08:00', end:'12:00', saturdayOnly:true}
   ],
   ms: [
     {id:'b1', label:'07:15 – 08:40', start:'07:15', end:'08:40'},
@@ -560,7 +567,8 @@ const TIME_BLOCKS = {
     {id:'b4', label:'12:35 – 14:00', start:'12:35', end:'14:00'},
     {id:'b5', label:'14:00 – 15:25', start:'14:00', end:'15:25'},
     {id:'b6', label:'15:45 – 17:00', start:'15:45', end:'17:00'},
-    {id:'b7', label:'17:00 – 18:00', start:'17:00', end:'18:00'}
+    {id:'b7', label:'17:00 – 18:00', start:'17:00', end:'18:00'},
+    {id:'b8', label:'08:00 – 12:00 (Sábado)', start:'08:00', end:'12:00', saturdayOnly:true}
   ],
   primary: [
     {id:'b1', label:'07:15 – 08:30', start:'07:15', end:'08:30'},
@@ -568,7 +576,8 @@ const TIME_BLOCKS = {
     {id:'b3', label:'10:20 – 11:35', start:'10:20', end:'11:35'},
     {id:'b4', label:'11:45 – 13:00', start:'11:45', end:'13:00'},
     {id:'b5', label:'14:00 – 15:25', start:'14:00', end:'15:25'},
-    {id:'b6', label:'15:45 – 17:00', start:'15:45', end:'17:00'}
+    {id:'b6', label:'15:45 – 17:00', start:'15:45', end:'17:00'},
+    {id:'b8', label:'08:00 – 12:00 (Sábado)', start:'08:00', end:'12:00', saturdayOnly:true}
   ]
 };
 const CAT_TAG_CLASS = {curso:'tag-curso', escuela:'tag-escuela', club:'tag-club'};
@@ -577,7 +586,7 @@ const GROUP_PLACEHOLDERS = {
   escuela:'Ej. Escuela de Robótica',
   club:'Ej. Club de Inglés'
 };
-
+ 
 // ════════════════════════════════════════
 // ESTADO
 // ════════════════════════════════════════
@@ -589,7 +598,7 @@ let form={
   primary:{teacher:'',teacherEmail:'',date:'',startTime:'',endTime:'',subject:'',topic:''}
 };
 let modalPC=null, modalPicked=null, editingId=null, modalCatFilter='';
-
+ 
 // ════════════════════════════════════════
 // API
 // ════════════════════════════════════════
@@ -600,7 +609,7 @@ async function api(method,url,body){
   if(!r.ok){const e=await r.json();throw new Error(e.error||'Error del servidor');}
   return r.json();
 }
-
+ 
 // ════════════════════════════════════════
 // DÍAS HÁBILES — 5 días de anticipación
 // ════════════════════════════════════════
@@ -627,10 +636,12 @@ function dateToStr(d){
 }
 function isValidReservationDate(dateStr){
   if(!dateStr) return false;
+  const d = new Date(dateStr+'T12:00:00');
+  if(d.getDay()===0) return false; // No domingos
   const minDate = dateToStr(getMinReservationDate());
   return dateStr >= minDate;
 }
-
+ 
 // ════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════
@@ -658,7 +669,7 @@ async function init(){
     console.error(e);
   }
 }
-
+ 
 // ════════════════════════════════════════
 // NAVEGACIÓN
 // ════════════════════════════════════════
@@ -673,7 +684,7 @@ function switchTab(lab,el){
   else if(lab==='config') loadConfig();
   else { renderSidebar(lab); setTimeout(()=>renderBlocksSelector(lab),50); }
 }
-
+ 
 // ════════════════════════════════════════
 // HORARIOS BLOQUEADOS
 // ════════════════════════════════════════
@@ -731,7 +742,7 @@ function renderBlocks(){
   document.getElementById('blocks-display').innerHTML=html||
     '<p style="font-size:13px;color:var(--text3);margin-top:1rem;">No hay bloques configurados aún.</p>';
 }
-
+ 
 // ════════════════════════════════════════
 // SIDEBAR
 // ════════════════════════════════════════
@@ -744,22 +755,22 @@ function renderSidebar(lab){
   const minDate=dateToStr(getMinReservationDate());
   const occ=sel.length;
   const total=PC_IDS[lab].length;
-
+ 
   const selHtml=sel.length===0
     ?'<span style="color:var(--text3);">Haz clic en los equipos del mapa para asignar estudiantes</span>'
     :sel.map(([pc,s])=>`<span style="display:inline-block;margin:2px 3px 2px 0;">
         <strong>${pc.toUpperCase()}:</strong> ${s.name}
         <span style="font-size:10px;color:var(--text2);">(${s.group_name})</span>
       </span>`).join('');
-
+ 
   const blockedBanner=blocked
     ?`<div class="banner banner-amber"><strong>⚠ Horario bloqueado por clase</strong>El ${DAYS[blocked.day]} de ${blocked.start_time} a ${blocked.end_time} está reservado para clase.</div>`:'';
-
+ 
   const dateBanner=dateSet&&!dateValid
     ?`<div class="banner banner-red"><strong>⛔ Fecha no permitida</strong>Las reservas deben hacerse con mínimo 5 días hábiles de anticipación. La fecha mínima disponible es ${fmtDate(minDate)}.</div>`:'';
-
+ 
   const canSave = dateSet && dateValid && !blocked && f.teacher && f.startTime && f.endTime;
-
+ 
   document.getElementById('sidebar-'+lab).innerHTML=`
     <div class="card">
       <h3>Estado actual</h3>
@@ -808,7 +819,7 @@ function renderSidebar(lab){
     </div>`;
   setTimeout(()=>renderBlocksSelector(lab), 20);
 }
-
+ 
 function handleFormInput(el){
   const lab = el.getAttribute('data-lab');
   const field = el.getAttribute('data-field');
@@ -822,14 +833,14 @@ function handleFormInput(el){
     }
   }
 }
-
+ 
 function setForm(lab, field, value){
   if(!form[lab]) return;
   form[lab][field] = value;
   if(field==='date') renderBlocksSelector(lab);
   updateSaveButton(lab);
 }
-
+ 
 function renderBlocksSelector(lab){
   const f = form[lab];
   const blocks = TIME_BLOCKS[lab] || [];
@@ -837,41 +848,49 @@ function renderBlocksSelector(lab){
   const container = document.getElementById('blocks-selector-'+lab);
   const msg = document.getElementById('blocks-msg-'+lab);
   if(!container) return;
-
+ 
   if(!dateSet){
     container.innerHTML = '<span style="font-size:12px;color:var(--text3);">Selecciona primero una fecha</span>';
     if(msg) msg.textContent = '';
     return;
   }
-
-  // Calcular día de semana
+ 
   const d = new Date(f.date+'T12:00:00');
-  const jsDay = d.getDay();
-  const dayIdx = jsDay===0?-1:jsDay-1;
-
-  // Reservas existentes ese día en ese lab
+  const jsDay = d.getDay(); // 0=dom,1=lun,...,6=sab
+  const isSaturday = jsDay === 6;
+  const isSunday = jsDay === 0;
+  const dayIdx = jsDay===0?-1:jsDay===6?5:jsDay-1; // 0=lun..4=vie, 5=sab
+ 
+  if(isSunday){
+    container.innerHTML = '<span style="font-size:12px;color:var(--text3);">Los domingos no están disponibles para reservas.</span>';
+    if(msg) msg.textContent = '';
+    return;
+  }
+ 
   const existingThatDay = reservations.filter(r => r.lab===lab && r.date===f.date);
-
+ 
   let html = '';
   let availableCount = 0;
   blocks.forEach(b => {
-    // Verificar si está bloqueado por clase
-    const blocked = (dayIdx>=0&&dayIdx<=4) ? blockedSchedules.find(bs =>
+    // Filtrar: sábado solo muestra bloque de sábado, entre semana oculta bloque de sábado
+    if(b.saturdayOnly && !isSaturday) return;
+    if(!b.saturdayOnly && isSaturday) return;
+ 
+    const blocked = (!isSaturday && dayIdx>=0) ? blockedSchedules.find(bs =>
       bs.lab===lab && Number(bs.day)===dayIdx &&
       toMins(b.start) < toMins(bs.end_time) && toMins(b.end) > toMins(bs.start_time)
     ) : null;
-
-    // Verificar si ya tiene una reserva
+ 
     const reserved = existingThatDay.find(r =>
       toMins(b.start) < toMins(r.end_time) && toMins(b.end) > toMins(r.start_time)
     );
-
+ 
     const isSelected = f.startTime===b.start && f.endTime===b.end;
     const isUnavailable = blocked || reserved;
-
+ 
     let style = 'padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:2px solid;transition:all .15s;';
     let title = '';
-
+ 
     if(isSelected){
       style += 'background:var(--blue);color:#fff;border-color:var(--blue);';
     } else if(blocked){
@@ -884,26 +903,23 @@ function renderBlocksSelector(lab){
       style += 'background:var(--green-l);color:var(--green);border-color:var(--green-m);';
       availableCount++;
     }
-
+ 
     const clickFn = isUnavailable ? '' : `onclick="selectBlock('${lab}','${b.start}','${b.end}')"`;
-    html += `<button style="${style}" title="${title}" ${clickFn}>${b.label}${blocked?' 🔒':reserved?' ❌':''}</button>`;
+    const satBadge = b.saturdayOnly ? ' 📅' : '';
+    html += `<button style="${style}" title="${title}" ${clickFn}>${b.label}${blocked?' 🔒':reserved?' ❌':satBadge}</button>`;
   });
-
-  container.innerHTML = html;
-  if(msg){
-    if(availableCount===0 && dateSet) msg.textContent = 'No hay bloques disponibles para este día.';
-    else if(dayIdx<0) msg.textContent = 'Fin de semana — no hay bloques disponibles.';
-    else msg.textContent = availableCount+' bloque(s) disponible(s)';
-  }
+ 
+  container.innerHTML = html || '<span style="font-size:12px;color:var(--text3);">No hay bloques disponibles para este día.</span>';
+  if(msg) msg.textContent = availableCount > 0 ? availableCount+' bloque(s) disponible(s)' : '';
 }
-
+ 
 function selectBlock(lab, start, end){
   form[lab].startTime = start;
   form[lab].endTime = end;
   renderBlocksSelector(lab);
   updateSaveButton(lab);
 }
-
+ 
 function updateSaveButton(lab){
   try{
     const f=form[lab];
@@ -930,7 +946,7 @@ function updateSaveButton(lab){
     }
   }catch(e){ console.log("updateSaveButton error:",e); }
 }
-
+ 
 // ════════════════════════════════════════
 // SELECCIÓN DE PC
 // ════════════════════════════════════════
@@ -957,14 +973,14 @@ function selectPC(lab,num){
   renderModalList();
   document.getElementById('student-modal').classList.add('open');
 }
-
+ 
 function setModalCat(cat,el){
   modalCatFilter=cat;
   document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   renderModalList();
 }
-
+ 
 function renderModalList(){
   const q=document.getElementById('modal-search').value.toLowerCase();
   const usedIds=Object.values(assignments[modalPC.lab]).map(s=>s._id||s.id);
@@ -984,9 +1000,9 @@ function renderModalList(){
       <span class="s-tag ${CAT_TAG_CLASS[s.category]||''}">${CAT_LABELS[s.category]||s.category}</span>
     </div>`).join('');
 }
-
+ 
 function pickStudent(id){modalPicked=students.find(s=>(s._id||s.id)==id);renderModalList();}
-
+ 
 function confirmStudent(){
   if(!modalPicked||!modalPC) return;
   const{lab,num,domId,key}=modalPC;
@@ -1006,7 +1022,7 @@ function closeModal(){
   document.getElementById('student-modal').classList.remove('open');
   modalPC=null; modalPicked=null;
 }
-
+ 
 // ════════════════════════════════════════
 // GUARDAR RESERVA
 // ════════════════════════════════════════
@@ -1057,7 +1073,7 @@ async function saveReservation(lab){
     showToast('✅ Reserva guardada — correo enviado');
   }catch(e){showToast(e.message);}
 }
-
+ 
 // ════════════════════════════════════════
 // REPORTE
 // ════════════════════════════════════════
@@ -1125,7 +1141,7 @@ async function renderReport(){
       </tr>`;
     }
   });
-
+ 
   document.getElementById('rep-content').innerHTML=`
     <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
       <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
@@ -1148,7 +1164,7 @@ async function renderReport(){
       <tbody>${html}</tbody>
     </table></div>`;
 }
-
+ 
 function updateDeleteBtn(){
   const checked=document.querySelectorAll('.res-check:checked');
   const btn=document.getElementById('btn-delete-selected');
@@ -1161,12 +1177,12 @@ function updateDeleteBtn(){
   const allCheck=document.getElementById('check-all');
   if(allCheck) allCheck.checked=allChecks.length>0&&checked.length===allChecks.length;
 }
-
+ 
 function toggleAllChecks(val){
   document.querySelectorAll('.res-check').forEach(c=>c.checked=val);
   updateDeleteBtn();
 }
-
+ 
 async function deleteSelected(){
   const checked=[...document.querySelectorAll('.res-check:checked')].map(c=>c.value);
   if(!checked.length) return;
@@ -1180,7 +1196,7 @@ async function deleteSelected(){
     showToast('✅ '+checked.length+' reserva(s) eliminada(s)');
   }catch(e){showToast(e.message);}
 }
-
+ 
 async function deleteRes(id){
   if(!confirm('¿Eliminar esta reserva?')) return;
   try{
@@ -1195,7 +1211,7 @@ function fmtDate(d){
   const[y,m,day]=d.split('-');
   return `${day}/${m}/${y}`;
 }
-
+ 
 // ════════════════════════════════════════
 // ESTUDIANTES
 // ════════════════════════════════════════
@@ -1219,6 +1235,142 @@ async function addStudent(){
     renderAdminTable(); showToast('✅ '+name+' agregado');
   }catch(e){showToast(e.message);}
 }
+async function importFromExcel(input){
+  const file = input.files[0];
+  if(!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  
+  showToast('⏳ Procesando archivo...');
+  
+  try {
+    let rows = [];
+    
+    if(ext === 'csv') {
+      // Parse CSV
+      const text = await file.text();
+      const lines = text.split(/\r?\n/).filter(l => l.trim());
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/['"]/g,''));
+      for(let i = 1; i < lines.length; i++) {
+        const vals = lines[i].split(',').map(v => v.trim().replace(/['"]/g,''));
+        if(vals.length < 2) continue;
+        const row = {};
+        headers.forEach((h,idx) => row[h] = vals[idx] || '');
+        rows.push(row);
+      }
+    } else {
+      // Parse XLSX using SheetJS from CDN
+      const data = await file.arrayBuffer();
+      if(typeof XLSX === 'undefined') {
+        // Load SheetJS dynamically
+        await new Promise((res,rej) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+          s.onload = res; s.onerror = rej;
+          document.head.appendChild(s);
+        });
+      }
+      const wb = XLSX.read(data, {type:'array'});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      rows = XLSX.utils.sheet_to_json(ws, {defval:''});
+      // Normalize headers to lowercase
+      rows = rows.map(r => {
+        const norm = {};
+        Object.keys(r).forEach(k => norm[k.toLowerCase().trim()] = String(r[k]).trim());
+        return norm;
+      });
+    }
+    
+    if(!rows.length) { showToast('❌ El archivo está vacío'); return; }
+    
+    // Show preview modal
+    showImportPreview(rows);
+    
+  } catch(e) {
+    console.error('Import error:', e);
+    showToast('❌ Error al leer el archivo: ' + e.message);
+  }
+  input.value = '';
+}
+ 
+function showImportPreview(rows) {
+  // Detect columns - look for name, category, group
+  const sample = rows[0];
+  const keys = Object.keys(sample);
+  
+  // Map columns
+  let nameCol = keys.find(k => /nombre|name/i.test(k)) || keys[0];
+  let catCol  = keys.find(k => /categor|tipo|type/i.test(k)) || keys[1];
+  let grpCol  = keys.find(k => /grupo|grado|group|grade|curso|escuela|club/i.test(k)) || keys[2];
+  let emailCol = keys.find(k => /email|correo/i.test(k)) || '';
+ 
+  // Parse students
+  const parsed = rows.map(r => ({
+    name:       (r[nameCol]||'').trim(),
+    category:   normCategory(r[catCol]||''),
+    group_name: (r[grpCol]||'').trim(),
+    email:      emailCol ? (r[emailCol]||'').trim() : ''
+  })).filter(s => s.name && s.category && s.group_name);
+ 
+  if(!parsed.length) {
+    showToast('❌ No se encontraron datos válidos. Asegúrate de tener columnas: Nombre, Categoría (Curso/Escuela/Club), Grupo');
+    return;
+  }
+ 
+  // Show modal with preview
+  const modal = document.getElementById('modal-overlay');
+  const modalContent = document.getElementById('modal-content');
+  if(!modal || !modalContent) { doImport(parsed); return; }
+ 
+  modalContent.innerHTML = `
+    <h3 style="margin:0 0 12px">📥 Importar ${parsed.length} estudiante(s)</h3>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">
+      Se importarán los siguientes estudiantes. Los que ya existan (mismo nombre) serán ignorados.
+    </p>
+    <div style="max-height:240px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;margin-bottom:16px;">
+      <table style="width:100%;font-size:12px;border-collapse:collapse;">
+        <thead><tr style="background:var(--bg2);">
+          <th style="padding:6px 10px;text-align:left;">Nombre</th>
+          <th style="padding:6px 10px;text-align:left;">Categoría</th>
+          <th style="padding:6px 10px;text-align:left;">Grupo</th>
+        </tr></thead>
+        <tbody>${parsed.slice(0,50).map(s=>`<tr><td style="padding:5px 10px;border-top:1px solid var(--border)">${s.name}</td><td style="padding:5px 10px;border-top:1px solid var(--border)">${s.category}</td><td style="padding:5px 10px;border-top:1px solid var(--border)">${s.group_name}</td></tr>`).join('')}
+        ${parsed.length>50?`<tr><td colspan="3" style="padding:8px 10px;color:var(--text3);text-align:center">...y ${parsed.length-50} más</td></tr>`:''}
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button class="btn btn-sm" onclick="closeModal()" style="background:var(--bg2);">Cancelar</button>
+      <button class="btn btn-sm btn-primary" onclick="doImport(${JSON.stringify(parsed).replace(/'/g,'&#39;')})">✅ Confirmar importación</button>
+    </div>`;
+  modal.style.display='flex';
+}
+ 
+function normCategory(val) {
+  const v = val.toLowerCase().trim();
+  if(/cur|grad|clase|salón/.test(v)) return 'curso';
+  if(/esc|school/.test(v)) return 'escuela';
+  if(/club/.test(v)) return 'club';
+  if(v==='curso'||v==='escuela'||v==='club') return v;
+  return 'curso'; // default
+}
+ 
+async function doImport(parsed) {
+  closeModal();
+  let added = 0, skipped = 0;
+  showToast('⏳ Importando...');
+  for(const s of parsed) {
+    try {
+      await api('POST','/api/students', s);
+      added++;
+    } catch(e) {
+      skipped++; // Already exists or error
+    }
+  }
+  await loadStudents();
+  renderAdminTable();
+  showToast('✅ Importados: '+added+' | Omitidos: '+skipped);
+}
+ 
 function renderAdminTable(){
   const q=(document.getElementById('admin-search')||{value:''}).value.toLowerCase();
   const catF=(document.getElementById('admin-cat-filter')||{value:''}).value;
@@ -1292,7 +1444,7 @@ async function promoteGroup(){
     renderAdminTable(); showToast('✅ '+r.updated+' estudiante(s) actualizados a '+to);
   }catch(e){showToast(e.message);}
 }
-
+ 
 // ════════════════════════════════════════
 // CONFIGURACIÓN
 // ════════════════════════════════════════
@@ -1333,7 +1485,7 @@ async function testEmail(){
     msg.innerHTML=`<div class="banner banner-red"><strong>❌ Error al enviar</strong>${e.message}</div>`;
   }
 }
-
+ 
 // ════════════════════════════════════════
 // TOAST
 // ════════════════════════════════════════
@@ -1342,7 +1494,7 @@ function showToast(msg){
   t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3000);
 }
-
+ 
 // ════════════════════════════════════════
 // ARRANQUE
 // ════════════════════════════════════════
