@@ -940,36 +940,79 @@ async function renderReport(){
     return;
   }
   const chipClass={hs:'chip-hs',ms:'chip-ms',primary:'chip-primary'};
-  let rows=[];
+  // Group rows by reservation
+  filtered.sort((a,b)=>a.date.localeCompare(b.date)||a.lab_name.localeCompare(b.lab_name));
+  let html='';
   filtered.forEach(r=>{
-    (r.seats||[]).forEach(s=>rows.push({
-      date:r.date,labName:r.lab_name,labKey:r.lab,
-      teacher:r.teacher,startTime:r.start_time,endTime:r.end_time,
-      subject:r.subject,topic:r.topic,
-      pc:s.pc_key.toUpperCase(),student:s.student_name,
-      group:s.student_group,category:s.student_category
-    }));
+    const seats=r.seats||[];
+    const rowspan=seats.length||1;
+    seats.forEach((s,i)=>{
+      html+=`<tr>`;
+      if(i===0){
+        html+=`<td rowspan="${rowspan}" style="white-space:nowrap;vertical-align:top;padding-top:10px">${fmtDate(r.date)}</td>`;
+        html+=`<td rowspan="${rowspan}" style="vertical-align:top;padding-top:10px"><span class="chip ${chipClass[r.lab]}">${r.lab_name}</span></td>`;
+        html+=`<td rowspan="${rowspan}" style="vertical-align:top;padding-top:10px">${r.teacher}</td>`;
+        html+=`<td rowspan="${rowspan}" style="white-space:nowrap;vertical-align:top;padding-top:10px">${r.start_time} – ${r.end_time}</td>`;
+        html+=`<td rowspan="${rowspan}" style="vertical-align:top;padding-top:10px">${r.subject||'—'}</td>`;
+        html+=`<td rowspan="${rowspan}" style="vertical-align:top;padding-top:10px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.topic||''}">${r.topic||'—'}</td>`;
+      }
+      html+=`<td style="font-weight:700">${s.pc_key.toUpperCase()}</td>`;
+      html+=`<td>${s.student_name}</td>`;
+      html+=`<td>${s.student_group}</td>`;
+      html+=`<td><span class="s-tag ${CAT_TAG_CLASS[s.student_category]||''}">${CAT_LABELS[s.student_category]||s.student_category}</span></td>`;
+      if(i===0){
+        html+=`<td rowspan="${rowspan}" style="vertical-align:top;padding-top:8px;text-align:center">
+          <button class="btn-del" onclick="deleteRes('${r._id}')" title="Eliminar reserva" style="font-size:16px;padding:4px 8px;">🗑</button>
+        </td>`;
+      }
+      html+=`</tr>`;
+    });
+    if(seats.length===0){
+      html+=`<tr>
+        <td style="white-space:nowrap">${fmtDate(r.date)}</td>
+        <td><span class="chip ${chipClass[r.lab]}">${r.lab_name}</span></td>
+        <td>${r.teacher}</td>
+        <td style="white-space:nowrap">${r.start_time} – ${r.end_time}</td>
+        <td>${r.subject||'—'}</td>
+        <td>${r.topic||'—'}</td>
+        <td colspan="4" style="color:var(--text3)">Sin asignaciones</td>
+        <td><button class="btn-del" onclick="deleteRes('${r._id}')" title="Eliminar" style="font-size:16px;padding:4px 8px;">🗑</button></td>
+      </tr>`;
+    }
   });
-  rows.sort((a,b)=>a.date.localeCompare(b.date)||a.labName.localeCompare(b.labName));
-  document.getElementById('rep-content').innerHTML=`
+
+  // Delete all button
+  const deleteAllBtn = filtered.length > 1
+    ? `<div style="margin-bottom:12px;display:flex;gap:8px;align-items:center">
+        <button class="btn btn-sm" style="background:var(--red-l);color:var(--red);border:1px solid var(--red-m);font-weight:700" onclick="deleteAllFiltered(${JSON.stringify(filtered.map(r=>r._id))})">
+          🗑 Eliminar todas las reservas mostradas (${filtered.length})
+        </button>
+       </div>`
+    : '';
+
+  document.getElementById('rep-content').innerHTML=deleteAllBtn+`
+    <div style="overflow-x:auto;">
     <table class="report-table">
       <thead><tr>
         <th>Fecha</th><th>Laboratorio</th><th>Profesor</th><th>Horario</th>
-        <th>Materia</th><th>Tema</th><th>Equipo</th><th>Estudiante</th><th>Grupo</th><th>Categoría</th>
+        <th>Materia</th><th>Tema</th><th>Equipo</th><th>Estudiante</th><th>Grupo</th><th>Categoría</th><th></th>
       </tr></thead>
-      <tbody>${rows.map(r=>`<tr>
-        <td style="white-space:nowrap">${fmtDate(r.date)}</td>
-        <td><span class="chip ${chipClass[r.labKey]}">${r.labName}</span></td>
-        <td>${r.teacher}</td>
-        <td style="white-space:nowrap">${r.startTime} – ${r.endTime}</td>
-        <td>${r.subject||'—'}</td>
-        <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.topic||''}">${r.topic||'—'}</td>
-        <td style="font-weight:700">${r.pc}</td>
-        <td>${r.student}</td>
-        <td>${r.group}</td>
-        <td><span class="s-tag ${CAT_TAG_CLASS[r.category]||''}">${CAT_LABELS[r.category]||r.category}</span></td>
-      </tr>`).join('')}</tbody>
-    </table>`;
+      <tbody>${html}</tbody>
+    </table></div>`;
+}
+
+
+
+async function deleteAllFiltered(ids){
+  if(!confirm('¿Eliminar todas las reservas mostradas? Esta acción no se puede deshacer.')) return;
+  try{
+    for(const id of ids){
+      await api('DELETE','/api/reservations/'+id);
+    }
+    reservations=reservations.filter(r=>!ids.includes(r._id));
+    renderReport();
+    showToast('✅ '+ids.length+' reservas eliminadas');
+  }catch(e){showToast(e.message);}
 }
 function fmtDate(d){
   if(!d) return '';
@@ -1131,3 +1174,4 @@ init();
 </script>
 </body>
 </html>
+
