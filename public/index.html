@@ -789,7 +789,7 @@ function renderSidebar(lab){
       </div>
       <div class="form-row"><label>Fecha <span style="font-size:11px;color:var(--text3);">(mín. ${fmtDate(minDate)})</span></label>
         <input type="date" value="${f.date}" min="${minDate}"
-          data-lab="${lab}" data-field="date" oninput="handleFormInput(this)"/>
+          data-lab="${lab}" data-field="date" oninput="handleFormInput(this)" onchange="handleFormInput(this)"/>
       </div>
       <div class="form-row">
         <label>Bloque horario</label>
@@ -819,7 +819,12 @@ function handleFormInput(el){
   const field = el.getAttribute('data-field');
   if(lab && field && form[lab] !== undefined){
     form[lab][field] = el.value;
-    updateSaveButton(lab);
+    if(field==='date'){
+      // Small delay to ensure DOM is ready
+      setTimeout(()=>{ renderBlocksSelector(lab); updateSaveButton(lab); }, 10);
+    } else {
+      updateSaveButton(lab);
+    }
   }
 }
 
@@ -1337,5 +1342,3 @@ init();
 </script>
 </body>
 </html>
-
-
