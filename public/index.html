@@ -267,38 +267,43 @@ textarea{resize:vertical;min-height:70px;}
           <div class="wl" style="top:8px;left:12px;">Door</div>
           <div class="wl" style="top:8px;left:36%;">Storage</div>
           <div class="wl" style="bottom:8px;left:34%;">Door</div>
-          <!-- Fila superior PC1-PC3 -->
+
+          <!-- Fila superior: PC1, PC2, PC3 (izq junto a DOOR) -->
           <div class="desk" style="top:30px;left:10px;width:128px;height:20px;"></div>
-          <div class="pc free" id="p-1" style="top:54px;left:14px"  onclick="selectPC('primary',1)">PC1</div>
-          <div class="pc free" id="p-2" style="top:54px;left:56px"  onclick="selectPC('primary',2)">PC2</div>
-          <div class="pc free" id="p-3" style="top:54px;left:98px"  onclick="selectPC('primary',3)">PC3</div>
-          <!-- Isla central PC4-PC9 -->
+          <div class="pc free" id="p-1"  style="top:54px;left:14px"  onclick="selectPC('primary',1)">PC1</div>
+          <div class="pc free" id="p-2"  style="top:54px;left:56px"  onclick="selectPC('primary',2)">PC2</div>
+          <div class="pc free" id="p-3"  style="top:54px;left:98px"  onclick="selectPC('primary',3)">PC3</div>
+
+          <!-- Isla central: PC22,PC21,PC20 arriba · PC17,PC18,PC19 abajo -->
           <div class="desk" style="top:140px;left:162px;width:148px;height:20px;"></div>
-          <div class="pc free" id="p-4" style="top:114px;left:166px" onclick="selectPC('primary',4)">PC4</div>
-          <div class="pc free" id="p-5" style="top:114px;left:210px" onclick="selectPC('primary',5)">PC5</div>
-          <div class="pc free" id="p-6" style="top:114px;left:254px" onclick="selectPC('primary',6)">PC6</div>
-          <div class="pc free" id="p-7" style="top:164px;left:166px" onclick="selectPC('primary',7)">PC7</div>
-          <div class="pc free" id="p-8" style="top:164px;left:210px" onclick="selectPC('primary',8)">PC8</div>
-          <div class="pc free" id="p-9" style="top:164px;left:254px" onclick="selectPC('primary',9)">PC9</div>
-          <!-- Columna derecha PC18-PC22 -->
+          <div class="pc free" id="p-22" style="top:114px;left:166px" onclick="selectPC('primary',22)">PC22</div>
+          <div class="pc free" id="p-21" style="top:114px;left:210px" onclick="selectPC('primary',21)">PC21</div>
+          <div class="pc free" id="p-20" style="top:114px;left:254px" onclick="selectPC('primary',20)">PC20</div>
+          <div class="pc free" id="p-17" style="top:164px;left:166px" onclick="selectPC('primary',17)">PC17</div>
+          <div class="pc free" id="p-18" style="top:164px;left:210px" onclick="selectPC('primary',18)">PC18</div>
+          <div class="pc free" id="p-19" style="top:164px;left:254px" onclick="selectPC('primary',19)">PC19</div>
+
+          <!-- Columna derecha: PC4(top) → PC8(bottom) -->
           <div class="desk" style="top:30px;right:46px;width:20px;height:220px;"></div>
-          <div class="pc free" id="p-18" style="top:30px;right:70px"  onclick="selectPC('primary',18)">PC18</div>
-          <div class="pc free" id="p-19" style="top:76px;right:70px"  onclick="selectPC('primary',19)">PC19</div>
-          <div class="pc free" id="p-20" style="top:122px;right:70px" onclick="selectPC('primary',20)">PC20</div>
-          <div class="pc free" id="p-21" style="top:168px;right:70px" onclick="selectPC('primary',21)">PC21</div>
-          <div class="pc free" id="p-22" style="top:214px;right:70px" onclick="selectPC('primary',22)">PC22</div>
-          <!-- Fila inf izq PC10-PC11 -->
+          <div class="pc free" id="p-4"  style="top:30px;right:70px"  onclick="selectPC('primary',4)">PC4</div>
+          <div class="pc free" id="p-5"  style="top:76px;right:70px"  onclick="selectPC('primary',5)">PC5</div>
+          <div class="pc free" id="p-6"  style="top:122px;right:70px" onclick="selectPC('primary',6)">PC6</div>
+          <div class="pc free" id="p-7"  style="top:168px;right:70px" onclick="selectPC('primary',7)">PC7</div>
+          <div class="pc free" id="p-8"  style="top:214px;right:70px" onclick="selectPC('primary',8)">PC8</div>
+
+          <!-- Fila inferior izq: PC16, PC15 -->
           <div class="desk" style="bottom:42px;left:10px;width:100px;height:20px;"></div>
-          <div class="pc free" id="p-10" style="bottom:66px;left:14px" onclick="selectPC('primary',10)">PC10</div>
-          <div class="pc free" id="p-11" style="bottom:66px;left:56px" onclick="selectPC('primary',11)">PC11</div>
-          <!-- Fila inf der PC12-PC17 -->
+          <div class="pc free" id="p-16" style="bottom:66px;left:14px" onclick="selectPC('primary',16)">PC16</div>
+          <div class="pc free" id="p-15" style="bottom:66px;left:56px" onclick="selectPC('primary',15)">PC15</div>
+
+          <!-- Fila inferior der: PC14,PC13,PC12,PC11,PC10,PC9 -->
           <div class="desk" style="bottom:42px;left:168px;width:280px;height:20px;"></div>
-          <div class="pc free" id="p-12" style="bottom:66px;left:172px" onclick="selectPC('primary',12)">PC12</div>
+          <div class="pc free" id="p-14" style="bottom:66px;left:172px" onclick="selectPC('primary',14)">PC14</div>
           <div class="pc free" id="p-13" style="bottom:66px;left:216px" onclick="selectPC('primary',13)">PC13</div>
-          <div class="pc free" id="p-14" style="bottom:66px;left:260px" onclick="selectPC('primary',14)">PC14</div>
-          <div class="pc free" id="p-15" style="bottom:66px;left:304px" onclick="selectPC('primary',15)">PC15</div>
-          <div class="pc free" id="p-16" style="bottom:66px;left:348px" onclick="selectPC('primary',16)">PC16</div>
-          <div class="pc free" id="p-17" style="bottom:66px;left:392px" onclick="selectPC('primary',17)">PC17</div>
+          <div class="pc free" id="p-12" style="bottom:66px;left:260px" onclick="selectPC('primary',12)">PC12</div>
+          <div class="pc free" id="p-11" style="bottom:66px;left:304px" onclick="selectPC('primary',11)">PC11</div>
+          <div class="pc free" id="p-10" style="bottom:66px;left:348px" onclick="selectPC('primary',10)">PC10</div>
+          <div class="pc free" id="p-9"  style="bottom:66px;left:392px" onclick="selectPC('primary',9)">PC9</div>
         </div>
         <div class="legend">
           <div class="li"><div class="ld" style="background:var(--green-l);border:2px solid var(--green-m)"></div>Libre</div>
