@@ -745,7 +745,7 @@ function renderSidebar(lab){
     </div>
     <div class="card">
       <h3>Nueva reserva</h3>
-      ${blockedBanner}${dateBanner}<div id="date-banner-${lab}"></div>
+      <div id="blocked-banner-${lab}"></div>
       <div class="form-row"><label>Profesor</label>
         <input type="text" placeholder="Nombre del profesor" value="${f.teacher}"
           data-lab="${lab}" data-field="teacher" oninput="handleFormInput(this)"/>
@@ -808,6 +808,13 @@ function updateSaveButton(lab){
     const hasStart=f.startTime&&f.startTime.length>0;
     const hasEnd=f.endTime&&f.endTime.length>0;
     const canSave=dateSet&&dateValid&&!blocked&&hasTeacher&&hasStart&&hasEnd;
+    // Show blocked banner in sidebar
+    const bannerEl=document.getElementById('blocked-banner-'+lab);
+    if(bannerEl){
+      if(blocked) bannerEl.innerHTML='<div class="banner banner-amber" style="margin-bottom:10px"><strong>⛔ Horario bloqueado por clase</strong>'+blocked.start_time+' – '+blocked.end_time+'. Elige otro horario.</div>';
+      else if(dateSet&&!dateValid){ const md=dateToStr(getMinReservationDate()); bannerEl.innerHTML='<div class="banner banner-red" style="margin-bottom:10px"><strong>⛔ Fecha no permitida</strong>Mínimo 5 días hábiles. Fecha mínima: '+fmtDate(md)+'</div>'; }
+      else bannerEl.innerHTML='';
+    }
     const btn=document.getElementById("btn-save-"+lab);
     if(btn){
       btn.disabled=!canSave;
@@ -895,7 +902,10 @@ async function saveReservation(lab){
   if(!f.teacher||!f.date||!f.startTime||!f.endTime){showToast('Completa nombre, fecha y horario');return;}
   if(!isValidReservationDate(f.date)){showToast('La fecha debe ser mínimo 5 días hábiles de anticipación');return;}
   if(!Object.keys(assignments[lab]).length){showToast('Asigna al menos un estudiante a un equipo');return;}
-  if(isBlocked(lab,f.date,f.startTime,f.endTime)){showToast('Horario bloqueado — no se puede reservar');return;}
+  // Recargar horarios bloqueados del servidor antes de validar
+  try{ blockedSchedules = await api('GET','/api/schedules'); }catch(e){}
+  const blocked=isBlocked(lab,f.date,f.startTime,f.endTime);
+  if(blocked){showToast('⛔ Horario bloqueado por clase: '+blocked.start_time+' – '+blocked.end_time+'. Elige otro horario.');return;}
   // Verificar conflicto con reservas existentes
   const conflict = reservations.find(r =>
     r.lab===lab && r.date===f.date &&
@@ -1219,3 +1229,4 @@ init();
 </script>
 </body>
 </html>
+
