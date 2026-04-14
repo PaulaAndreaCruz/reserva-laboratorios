@@ -172,43 +172,43 @@ textarea{resize:vertical;min-height:70px;}
     <div class="lab-layout">
       <div class="map-container">
         <div class="map-title">Tech Lab Bachillerato — 26 equipos</div>
-        <div class="lab-map" style="height:320px;">
-          <div class="wl" style="top:8px;left:12px;">Storage</div>
-          <div class="wl" style="top:8px;left:46%;transform:translateX(-50%);">Whiteboard</div>
-          <div class="wl" style="top:8px;right:12px;">Entrance</div>
-          <!-- Bloque izquierdo -->
-          <div class="desk" style="top:56px;left:10px;width:148px;height:20px;"></div>
-          <div class="pc free" id="hs-1"  style="top:30px;left:58px"  onclick="selectPC('hs',1)">PC1</div>
-          <div class="pc free" id="hs-2"  style="top:30px;left:102px" onclick="selectPC('hs',2)">PC2</div>
-          <div class="pc free" id="hs-3"  style="top:80px;left:14px"  onclick="selectPC('hs',3)">PC3</div>
-          <div class="pc free" id="hs-4"  style="top:80px;left:58px"  onclick="selectPC('hs',4)">PC4</div>
-          <div class="pc free" id="hs-5"  style="top:80px;left:102px" onclick="selectPC('hs',5)">PC5</div>
-          <div class="desk" style="top:176px;left:10px;width:148px;height:20px;"></div>
-          <div class="pc free" id="hs-6"  style="top:150px;left:14px"  onclick="selectPC('hs',6)">PC6</div>
-          <div class="pc free" id="hs-7"  style="top:150px;left:58px"  onclick="selectPC('hs',7)">PC7</div>
-          <div class="pc free" id="hs-8"  style="top:150px;left:102px" onclick="selectPC('hs',8)">PC8</div>
-          <div class="pc free" id="hs-9"  style="top:200px;left:14px"  onclick="selectPC('hs',9)">PC9</div>
-          <div class="pc free" id="hs-10" style="top:200px;left:58px"  onclick="selectPC('hs',10)">PC10</div>
-          <div class="pc free" id="hs-11" style="top:200px;left:102px" onclick="selectPC('hs',11)">PC11</div>
-          <!-- Bloque central -->
-          <div class="desk" style="top:78px;left:250px;width:20px;height:298px;"></div>
-          <div class="pc free" id="hs-12" style="top:78px;left:216px"  onclick="selectPC('hs',12)">PC12</div>
-          <div class="pc free" id="hs-13" style="top:128px;left:216px" onclick="selectPC('hs',13)">PC13</div>
-          <div class="pc free" id="hs-14" style="top:178px;left:216px" onclick="selectPC('hs',14)">PC14</div>
-          <div class="pc free" id="hs-15" style="top:228px;left:216px" onclick="selectPC('hs',15)">PC15</div>
-          <div class="pc free" id="hs-16" style="top:278px;left:216px" onclick="selectPC('hs',16)">PC16</div>
-          <div class="pc free" id="hs-17" style="top:328px;left:216px" onclick="selectPC('hs',17)">PC17</div>
-          <div class="pc free" id="hs-18" style="top:78px;left:274px"  onclick="selectPC('hs',18)">PC18</div>
-          <div class="pc free" id="hs-19" style="top:128px;left:274px" onclick="selectPC('hs',19)">PC19</div>
-          <div class="pc free" id="hs-20" style="top:178px;left:274px" onclick="selectPC('hs',20)">PC20</div>
-          <div class="pc free" id="hs-21" style="top:228px;left:274px" onclick="selectPC('hs',21)">PC21</div>
-          <div class="pc free" id="hs-22" style="top:278px;left:274px" onclick="selectPC('hs',22)">PC22</div>
-          <div class="pc free" id="hs-23" style="top:328px;left:274px" onclick="selectPC('hs',23)">PC23</div>
-          <!-- Bloque derecho -->
-          <div class="desk" style="top:176px;right:10px;width:126px;height:20px;"></div>
-          <div class="pc free" id="hs-24" style="top:150px;right:96px" onclick="selectPC('hs',24)">PC24</div>
-          <div class="pc free" id="hs-25" style="top:150px;right:54px" onclick="selectPC('hs',25)">PC25</div>
-          <div class="pc free" id="hs-26" style="top:150px;right:12px" onclick="selectPC('hs',26)">PC26</div>
+                        <div class="lab-map" style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden;">
+<svg viewBox="0 0 450 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+  <rect width="450" height="270" fill="#f0f2f6" rx="8"/>
+  <rect x="5" y="5" width="55" height="16" rx="3" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="1"/><text x="32" y="17" text-anchor="middle" font-size="9" font-weight="700" fill="#185FA5">Storage</text>
+  <rect x="185" y="5" width="75" height="16" rx="3" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="1"/><text x="222" y="17" text-anchor="middle" font-size="9" font-weight="700" fill="#185FA5">Whiteboard</text>
+  <rect x="380" y="5" width="58" height="16" rx="3" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="1"/><text x="409" y="17" text-anchor="middle" font-size="9" font-weight="700" fill="#185FA5">Entrance</text>
+  <g id="hs-1" onclick="selectPC('hs',1)" style="cursor:pointer"><rect x="50" y="28" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="68" y="45" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC1</text></g>
+  <g id="hs-2" onclick="selectPC('hs',2)" style="cursor:pointer"><rect x="94" y="28" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="112" y="45" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC2</text></g>
+  <rect x="8" y="58" width="130" height="14" rx="3" fill="white" stroke="#c4c9d6" stroke-width="2"/>
+  <g id="hs-3" onclick="selectPC('hs',3)" style="cursor:pointer"><rect x="8" y="76" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="26" y="93" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC3</text></g>
+  <g id="hs-4" onclick="selectPC('hs',4)" style="cursor:pointer"><rect x="50" y="76" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="68" y="93" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC4</text></g>
+  <g id="hs-5" onclick="selectPC('hs',5)" style="cursor:pointer"><rect x="94" y="76" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="112" y="93" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC5</text></g>
+  <rect x="8" y="148" width="130" height="14" rx="3" fill="white" stroke="#c4c9d6" stroke-width="2"/>
+  <g id="hs-6" onclick="selectPC('hs',6)" style="cursor:pointer"><rect x="8" y="120" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="26" y="137" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC6</text></g>
+  <g id="hs-7" onclick="selectPC('hs',7)" style="cursor:pointer"><rect x="50" y="120" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="68" y="137" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC7</text></g>
+  <g id="hs-8" onclick="selectPC('hs',8)" style="cursor:pointer"><rect x="94" y="120" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="112" y="137" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC8</text></g>
+  <g id="hs-9" onclick="selectPC('hs',9)" style="cursor:pointer"><rect x="8" y="166" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="26" y="183" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC9</text></g>
+  <g id="hs-10" onclick="selectPC('hs',10)" style="cursor:pointer"><rect x="50" y="166" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="68" y="183" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC10</text></g>
+  <g id="hs-11" onclick="selectPC('hs',11)" style="cursor:pointer"><rect x="94" y="166" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="112" y="183" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC11</text></g>
+  <rect x="206" y="24" width="14" height="220" rx="3" fill="white" stroke="#c4c9d6" stroke-width="2"/>
+  <g id="hs-12" onclick="selectPC('hs',12)" style="cursor:pointer"><rect x="162" y="28" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="180" y="45" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC12</text></g>
+  <g id="hs-13" onclick="selectPC('hs',13)" style="cursor:pointer"><rect x="162" y="68" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="180" y="85" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC13</text></g>
+  <g id="hs-14" onclick="selectPC('hs',14)" style="cursor:pointer"><rect x="162" y="108" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="180" y="125" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC14</text></g>
+  <g id="hs-15" onclick="selectPC('hs',15)" style="cursor:pointer"><rect x="162" y="148" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="180" y="165" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC15</text></g>
+  <g id="hs-16" onclick="selectPC('hs',16)" style="cursor:pointer"><rect x="162" y="188" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="180" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC16</text></g>
+  <g id="hs-17" onclick="selectPC('hs',17)" style="cursor:pointer"><rect x="162" y="228" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="180" y="245" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC17</text></g>
+  <g id="hs-18" onclick="selectPC('hs',18)" style="cursor:pointer"><rect x="228" y="28" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="246" y="45" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC18</text></g>
+  <g id="hs-19" onclick="selectPC('hs',19)" style="cursor:pointer"><rect x="228" y="68" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="246" y="85" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC19</text></g>
+  <g id="hs-20" onclick="selectPC('hs',20)" style="cursor:pointer"><rect x="228" y="108" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="246" y="125" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC20</text></g>
+  <g id="hs-21" onclick="selectPC('hs',21)" style="cursor:pointer"><rect x="228" y="148" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="246" y="165" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC21</text></g>
+  <g id="hs-22" onclick="selectPC('hs',22)" style="cursor:pointer"><rect x="228" y="188" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="246" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC22</text></g>
+  <g id="hs-23" onclick="selectPC('hs',23)" style="cursor:pointer"><rect x="228" y="228" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="246" y="245" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC23</text></g>
+  <rect x="310" y="148" width="130" height="14" rx="3" fill="white" stroke="#c4c9d6" stroke-width="2"/>
+  <g id="hs-24" onclick="selectPC('hs',24)" style="cursor:pointer"><rect x="310" y="120" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="328" y="137" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC24</text></g>
+  <g id="hs-25" onclick="selectPC('hs',25)" style="cursor:pointer"><rect x="354" y="120" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="372" y="137" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC25</text></g>
+  <g id="hs-26" onclick="selectPC('hs',26)" style="cursor:pointer"><rect x="398" y="120" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="416" y="137" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC26</text></g>
+</svg>
         </div>
         <div class="legend">
           <div class="li"><div class="ld" style="background:var(--green-l);border:2px solid var(--green-m)"></div>Libre</div>
@@ -225,28 +225,24 @@ textarea{resize:vertical;min-height:70px;}
     <div class="lab-layout">
       <div class="map-container">
         <div class="map-title">Maker Space Bachillerato — 6 equipos</div>
-        <div class="lab-map" style="height:260px;">
-          <div class="wl" style="top:8px;right:12px;">Door</div>
-          <div class="wl" style="top:50%;right:12px;transform:translateY(-50%);">TV</div>
-          <div class="wl" style="bottom:8px;right:12px;">Storage</div>
-          <!-- Fila superior: PC3 izq, PC2 centro, PC1 der -->
-          <div class="pc free" id="ms-3" style="top:20px;left:30px"  onclick="selectPC('ms',3)">PC3</div>
-          <div class="pc free" id="ms-2" style="top:20px;left:145px" onclick="selectPC('ms',2)">PC2</div>
-          <div class="pc free" id="ms-1" style="top:20px;left:260px" onclick="selectPC('ms',1)">PC1</div>
-          <!-- Mesa 1: horizontal arriba centro -->
-          <div class="tbl" style="top:80px;left:130px;width:110px;height:32px;">Mesa 1</div>
-          <!-- Mesa 2: vertical izq arriba -->
-          <div class="tbl" style="top:95px;left:65px;width:38px;height:80px;">Mesa 2</div>
-          <!-- Mesa 5: vertical, más cerca del centro -->
-          <div class="tbl" style="top:120px;left:310px;width:38px;height:80px;">Mesa 5</div>
-          <!-- Mesa 3: vertical izq abajo -->
-          <div class="tbl" style="top:188px;left:65px;width:38px;height:75px;">Mesa 3</div>
-          <!-- Mesa 4: horizontal centro abajo -->
-          <div class="tbl" style="top:198px;left:120px;width:120px;height:32px;">Mesa 4</div>
-          <!-- Fila inferior: PC4 izq, PC5 centro, PC6 der -->
-          <div class="pc free" id="ms-4" style="bottom:20px;left:30px"  onclick="selectPC('ms',4)">PC4</div>
-          <div class="pc free" id="ms-5" style="bottom:20px;left:145px" onclick="selectPC('ms',5)">PC5</div>
-          <div class="pc free" id="ms-6" style="bottom:20px;left:260px" onclick="selectPC('ms',6)">PC6</div>
+                        <div class="lab-map" style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden;">
+<svg viewBox="0 0 360 268" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+  <rect width="360" height="268" fill="#f0f2f6" rx="8"/>
+  <rect x="308" y="5" width="40" height="16" rx="3" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="1"/><text x="328" y="17" text-anchor="middle" font-size="9" font-weight="700" fill="#185FA5">Door</text>
+  <rect x="306" y="128" width="32" height="16" rx="3" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="1"/><text x="322" y="140" text-anchor="middle" font-size="9" font-weight="700" fill="#185FA5">TV</text>
+  <rect x="296" y="246" width="52" height="16" rx="3" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="1"/><text x="322" y="258" text-anchor="middle" font-size="9" font-weight="700" fill="#185FA5">Storage</text>
+  <g id="ms-3" onclick="selectPC('ms',3)" style="cursor:pointer"><rect x="10" y="24" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="28" y="41" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC3</text></g>
+  <g id="ms-2" onclick="selectPC('ms',2)" style="cursor:pointer"><rect x="130" y="24" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="148" y="41" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC2</text></g>
+  <g id="ms-1" onclick="selectPC('ms',1)" style="cursor:pointer"><rect x="250" y="24" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="268" y="41" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC1</text></g>
+  <rect x="130" y="72" width="110" height="28" rx="5" fill="#FAEEDA" stroke="#EF9F27" stroke-width="2"/><text x="185" y="90" text-anchor="middle" font-size="9" font-weight="700" fill="#854F0B">Mesa 1</text>
+  <rect x="55" y="80" width="42" height="78" rx="5" fill="#FAEEDA" stroke="#EF9F27" stroke-width="2"/><text x="76" y="123" text-anchor="middle" font-size="9" font-weight="700" fill="#854F0B">Mesa 2</text>
+  <rect x="260" y="115" width="42" height="78" rx="5" fill="#FAEEDA" stroke="#EF9F27" stroke-width="2"/><text x="281" y="158" text-anchor="middle" font-size="9" font-weight="700" fill="#854F0B">Mesa 5</text>
+  <rect x="55" y="172" width="42" height="70" rx="5" fill="#FAEEDA" stroke="#EF9F27" stroke-width="2"/><text x="76" y="211" text-anchor="middle" font-size="9" font-weight="700" fill="#854F0B">Mesa 3</text>
+  <rect x="115" y="188" width="118" height="28" rx="5" fill="#FAEEDA" stroke="#EF9F27" stroke-width="2"/><text x="174" y="206" text-anchor="middle" font-size="9" font-weight="700" fill="#854F0B">Mesa 4</text>
+  <g id="ms-4" onclick="selectPC('ms',4)" style="cursor:pointer"><rect x="10" y="226" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="28" y="243" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC4</text></g>
+  <g id="ms-5" onclick="selectPC('ms',5)" style="cursor:pointer"><rect x="130" y="226" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="148" y="243" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC5</text></g>
+  <g id="ms-6" onclick="selectPC('ms',6)" style="cursor:pointer"><rect x="250" y="226" width="36" height="26" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="268" y="243" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC6</text></g>
+</svg>
         </div>
         <div class="legend">
           <div class="li"><div class="ld" style="background:var(--green-l);border:2px solid var(--green-m)"></div>Libre</div>
@@ -263,49 +259,42 @@ textarea{resize:vertical;min-height:70px;}
     <div class="lab-layout">
       <div class="map-container">
         <div class="map-title">Tech Lab Primaria — 22 equipos</div>
-        <div class="lab-map" style="height:280px;">
-          <div class="wl" style="top:6px;left:10px;">Door</div>
-          <div class="wl" style="top:6px;left:36%;">Storage</div>
-          <div class="wl" style="bottom:6px;left:36%;">Door</div>
-
-          <!-- Fila superior: PC1, PC2, PC3 -->
-          <div class="desk" style="top:22px;left:8px;width:120px;height:18px;"></div>
-          <div class="pc free" id="p-1"  style="top:44px;left:10px"  onclick="selectPC('primary',1)">PC1</div>
-          <div class="pc free" id="p-2"  style="top:44px;left:48px"  onclick="selectPC('primary',2)">PC2</div>
-          <div class="pc free" id="p-3"  style="top:44px;left:86px"  onclick="selectPC('primary',3)">PC3</div>
-
-          <!-- Isla central: PC22,PC21,PC20 arriba · PC17,PC18,PC19 abajo -->
-          <div class="desk" style="top:110px;left:148px;width:136px;height:18px;"></div>
-          <div class="pc free" id="p-22" style="top:86px;left:152px"  onclick="selectPC('primary',22)">PC22</div>
-          <div class="pc free" id="p-21" style="top:86px;left:192px"  onclick="selectPC('primary',21)">PC21</div>
-          <div class="pc free" id="p-20" style="top:86px;left:232px"  onclick="selectPC('primary',20)">PC20</div>
-          <div class="pc free" id="p-17" style="top:132px;left:152px" onclick="selectPC('primary',17)">PC17</div>
-          <div class="pc free" id="p-18" style="top:132px;left:192px" onclick="selectPC('primary',18)">PC18</div>
-          <div class="pc free" id="p-19" style="top:132px;left:232px" onclick="selectPC('primary',19)">PC19</div>
-
-          <!-- Columna derecha: PC4→PC8 -->
-          <div class="desk" style="top:22px;right:38px;width:18px;height:190px;"></div>
-          <div class="pc free" id="p-4"  style="top:22px;right:60px"  onclick="selectPC('primary',4)">PC4</div>
-          <div class="pc free" id="p-5"  style="top:62px;right:60px"  onclick="selectPC('primary',5)">PC5</div>
-          <div class="pc free" id="p-6"  style="top:102px;right:60px" onclick="selectPC('primary',6)">PC6</div>
-          <div class="pc free" id="p-7"  style="top:142px;right:60px" onclick="selectPC('primary',7)">PC7</div>
-          <div class="pc free" id="p-8"  style="top:182px;right:60px" onclick="selectPC('primary',8)">PC8</div>
-
-          <!-- Fila inferior izq: PC16, PC15 -->
-          <div class="desk" style="bottom:34px;left:8px;width:90px;height:18px;"></div>
-          <div class="pc free" id="p-16" style="bottom:56px;left:10px" onclick="selectPC('primary',16)">PC16</div>
-          <div class="pc free" id="p-15" style="bottom:56px;left:50px" onclick="selectPC('primary',15)">PC15</div>
-
-          <!-- Fila inferior der: PC14→PC9 -->
-          <div class="desk" style="bottom:34px;left:148px;width:264px;height:18px;"></div>
-          <div class="pc free" id="p-14" style="bottom:56px;left:152px" onclick="selectPC('primary',14)">PC14</div>
-          <div class="pc free" id="p-13" style="bottom:56px;left:192px" onclick="selectPC('primary',13)">PC13</div>
-          <div class="pc free" id="p-12" style="bottom:56px;left:232px" onclick="selectPC('primary',12)">PC12</div>
-          <div class="pc free" id="p-11" style="bottom:56px;left:272px" onclick="selectPC('primary',11)">PC11</div>
-          <div class="pc free" id="p-10" style="bottom:56px;left:312px" onclick="selectPC('primary',10)">PC10</div>
-          <div class="pc free" id="p-9"  style="bottom:56px;left:352px" onclick="selectPC('primary',9)">PC9</div>
+                                        <div class="lab-map" style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden;">
+<svg viewBox="0 0 468 278" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+  <rect width="468" height="278" fill="#f0f2f6" rx="8"/>
+  <rect x="5" y="4" width="40" height="15" rx="3" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="1"/><text x="25" y="15" text-anchor="middle" font-size="9" font-weight="700" fill="#185FA5">Door</text>
+  <rect x="165" y="4" width="55" height="15" rx="3" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="1"/><text x="192" y="15" text-anchor="middle" font-size="9" font-weight="700" fill="#185FA5">Storage</text>
+  <rect x="155" y="260" width="40" height="15" rx="3" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="1"/><text x="175" y="271" text-anchor="middle" font-size="9" font-weight="700" fill="#185FA5">Door</text>
+  <rect x="8" y="26" width="120" height="12" rx="3" fill="white" stroke="#c4c9d6" stroke-width="2"/>
+  <g id="p-1" onclick="selectPC('p',1)" style="cursor:pointer"><rect x="10" y="40" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="27" y="56" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC1</text></g>
+  <g id="p-2" onclick="selectPC('p',2)" style="cursor:pointer"><rect x="52" y="40" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="69" y="56" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC2</text></g>
+  <g id="p-3" onclick="selectPC('p',3)" style="cursor:pointer"><rect x="94" y="40" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="111" y="56" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC3</text></g>
+  <rect x="153" y="118" width="120" height="12" rx="3" fill="white" stroke="#c4c9d6" stroke-width="2"/>
+  <g id="p-22" onclick="selectPC('p',22)" style="cursor:pointer"><rect x="155" y="90" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="172" y="106" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC22</text></g>
+  <g id="p-21" onclick="selectPC('p',21)" style="cursor:pointer"><rect x="197" y="90" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="214" y="106" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC21</text></g>
+  <g id="p-20" onclick="selectPC('p',20)" style="cursor:pointer"><rect x="239" y="90" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="256" y="106" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC20</text></g>
+  <g id="p-17" onclick="selectPC('p',17)" style="cursor:pointer"><rect x="155" y="134" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="172" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC17</text></g>
+  <g id="p-18" onclick="selectPC('p',18)" style="cursor:pointer"><rect x="197" y="134" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="214" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC18</text></g>
+  <g id="p-19" onclick="selectPC('p',19)" style="cursor:pointer"><rect x="239" y="134" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="256" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC19</text></g>
+  <rect x="424" y="26" width="12" height="186" rx="3" fill="white" stroke="#c4c9d6" stroke-width="2"/>
+  <g id="p-4" onclick="selectPC('p',4)" style="cursor:pointer"><rect x="390" y="28" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="407" y="44" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC4</text></g>
+  <g id="p-5" onclick="selectPC('p',5)" style="cursor:pointer"><rect x="390" y="66" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="407" y="82" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC5</text></g>
+  <g id="p-6" onclick="selectPC('p',6)" style="cursor:pointer"><rect x="390" y="104" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="407" y="120" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC6</text></g>
+  <g id="p-7" onclick="selectPC('p',7)" style="cursor:pointer"><rect x="390" y="142" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="407" y="158" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC7</text></g>
+  <g id="p-8" onclick="selectPC('p',8)" style="cursor:pointer"><rect x="390" y="180" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="407" y="196" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC8</text></g>
+  <rect x="8" y="232" width="86" height="12" rx="3" fill="white" stroke="#c4c9d6" stroke-width="2"/>
+  <g id="p-16" onclick="selectPC('p',16)" style="cursor:pointer"><rect x="10" y="210" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="27" y="226" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC16</text></g>
+  <g id="p-15" onclick="selectPC('p',15)" style="cursor:pointer"><rect x="52" y="210" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="69" y="226" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC15</text></g>
+  <rect x="153" y="232" width="218" height="12" rx="3" fill="white" stroke="#c4c9d6" stroke-width="2"/>
+  <g id="p-14" onclick="selectPC('p',14)" style="cursor:pointer"><rect x="155" y="210" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="172" y="226" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC14</text></g>
+  <g id="p-13" onclick="selectPC('p',13)" style="cursor:pointer"><rect x="191" y="210" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="208" y="226" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC13</text></g>
+  <g id="p-12" onclick="selectPC('p',12)" style="cursor:pointer"><rect x="227" y="210" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="244" y="226" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC12</text></g>
+  <g id="p-11" onclick="selectPC('p',11)" style="cursor:pointer"><rect x="263" y="210" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="280" y="226" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC11</text></g>
+  <g id="p-10" onclick="selectPC('p',10)" style="cursor:pointer"><rect x="299" y="210" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="316" y="226" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC10</text></g>
+  <g id="p-9" onclick="selectPC('p',9)" style="cursor:pointer"><rect x="335" y="210" width="34" height="24" rx="5" fill="#EAF3DE" stroke="#97C459" stroke-width="2" class="pc-rect"/><text x="352" y="226" text-anchor="middle" font-size="9" font-weight="700" fill="#3B6D11" class="pc-text">PC9</text></g>
+</svg>
         </div>
-        <div class="legend">
+<div class="legend">
           <div class="li"><div class="ld" style="background:var(--green-l);border:2px solid var(--green-m)"></div>Libre</div>
           <div class="li"><div class="ld" style="background:var(--red-l);border:2px solid var(--red-m)"></div>Ocupado</div>
           <div class="li"><div class="ld" style="background:var(--bg);border:2px solid var(--border2)"></div>Mesa</div>
@@ -1003,8 +992,14 @@ function confirmStudent(){
   const{lab,num,domId,key}=modalPC;
   assignments[lab][key]=modalPicked;
   const el=document.getElementById(domId);
-  el.className='pc occupied';
-  el.textContent=modalPicked.name.split(' ')[0];
+  if(el){
+    const rect=el.querySelector('.pc-rect');
+    const txt=el.querySelector('.pc-text');
+    if(rect){rect.setAttribute('fill','#FCEBEB');rect.setAttribute('stroke','#E24B4A');}
+    if(txt){txt.setAttribute('fill','#A32D2D');txt.textContent=modalPicked.name.split(' ')[0];}
+    // fallback for div-based
+    if(el.className!==undefined&&typeof el.className==='string'){el.className='pc occupied';el.textContent=modalPicked.name.split(' ')[0];}
+  }
   closeModal(); renderSidebar(lab);
 }
 function closeModal(){
@@ -1045,8 +1040,15 @@ async function saveReservation(lab){
     reservations.unshift(res);
     // Reset mapa
     PC_IDS[lab].forEach(num=>{
-      const el=document.getElementById(PC_PREFIX[lab]+'-'+num);
-      if(el){el.className='pc free';el.textContent='PC'+num;}
+      const pref=PC_PREFIX[lab];
+      const el=document.getElementById(pref+'-'+num);
+      if(el){
+        const rect=el.querySelector('.pc-rect');
+        const txt=el.querySelector('.pc-text');
+        if(rect){rect.setAttribute('fill','#EAF3DE');rect.setAttribute('stroke','#97C459');}
+        if(txt){txt.setAttribute('fill','#3B6D11');txt.textContent='PC'+num;}
+        if(typeof el.className==='string'){el.className='pc free';el.textContent='PC'+num;}
+      }
     });
     assignments[lab]={};
     form[lab]={teacher:'',teacherEmail:'',date:'',startTime:'',endTime:'',subject:'',topic:''};
