@@ -255,7 +255,7 @@ app.put('/api/students/:id', async (req, res) => {
 });
  
 app.delete('/api/students/:id', async (req, res) => {
-  await Student.findByIdAndDelete(req.params.id);
+  try { await Student.findByIdAndDelete(req.params.id); } catch(e) {}
   res.json({ ok: true });
 });
  
@@ -285,7 +285,11 @@ app.post('/api/schedules', async (req, res) => {
 });
  
 app.delete('/api/schedules/:id', async (req, res) => {
-  await Schedule.findByIdAndDelete(req.params.id);
+  try {
+    await Schedule.findByIdAndDelete(req.params.id);
+  } catch(e) {
+    console.error('Error deleting schedule:', e.message);
+  }
   res.json({ ok: true });
 });
  
