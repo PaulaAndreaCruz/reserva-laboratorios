@@ -896,6 +896,16 @@ async function saveReservation(lab){
   if(!isValidReservationDate(f.date)){showToast('La fecha debe ser mínimo 5 días hábiles de anticipación');return;}
   if(!Object.keys(assignments[lab]).length){showToast('Asigna al menos un estudiante a un equipo');return;}
   if(isBlocked(lab,f.date,f.startTime,f.endTime)){showToast('Horario bloqueado — no se puede reservar');return;}
+  // Verificar conflicto con reservas existentes
+  const conflict = reservations.find(r =>
+    r.lab===lab && r.date===f.date &&
+    toMins(f.startTime) < toMins(r.end_time) &&
+    toMins(f.endTime)   > toMins(r.start_time)
+  );
+  if(conflict){
+    showToast('⚠ Laboratorio ya reservado de '+conflict.start_time+' a '+conflict.end_time+' por '+conflict.teacher);
+    return;
+  }
   try{
     const res=await api('POST','/api/reservations',{
       lab, lab_name:LAB_NAMES[lab],
@@ -1209,4 +1219,3 @@ init();
 </script>
 </body>
 </html>
-
