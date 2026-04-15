@@ -372,6 +372,32 @@ app.delete('/api/reservations/:id', async (req, res) => {
 });
  
 // ══════════════════════════════════════════════════
+// MY CLASSES API
+// ══════════════════════════════════════════════════
+app.get('/api/myclasses', async (req, res) => {
+  const list = await MyClass.find().sort({ lab:1, day:1, start_time:1 });
+  res.json(list);
+});
+ 
+app.post('/api/myclasses', async (req, res) => {
+  const { name, lab, day, start_time, end_time, teacher, seats } = req.body;
+  if (!name || !lab || day===undefined || !start_time || !end_time || !teacher)
+    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  const doc = await MyClass.create({ name, lab, day: Number(day), start_time, end_time, teacher, seats: seats||{} });
+  res.json(doc);
+});
+ 
+app.put('/api/myclasses/:id', async (req, res) => {
+  const doc = await MyClass.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+  res.json(doc);
+});
+ 
+app.delete('/api/myclasses/:id', async (req, res) => {
+  try { await MyClass.findByIdAndDelete(req.params.id); } catch(e) {}
+  res.json({ ok: true });
+});
+ 
+// ══════════════════════════════════════════════════
 // START
 // ══════════════════════════════════════════════════
 app.listen(PORT, () => {
