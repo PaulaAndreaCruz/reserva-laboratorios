@@ -1373,18 +1373,22 @@ function assignClsSeat(classId, key, lab){
  
 async function confirmClsSeat(){
   if(!modalPicked||!clsSeatModal) return;
-  const {classId,key} = clsSeatModal;
+  // Capture values before closeModal resets them
+  const picked = modalPicked;
+  const {classId, key} = clsSeatModal;
   const cls = myClasses.find(c=>(c._id||c.id)===classId);
   if(!cls) return;
   if(!cls.seats) cls.seats={};
-  cls.seats[key] = modalPicked;
+  cls.seats[key] = picked;
+  // Close modal first to reset state
+  modalMode = 'reservation';
+  clsSeatModal = null;
+  modalPicked = null;
+  document.getElementById('student-modal').classList.remove('open');
   try{
     await api('PUT','/api/myclasses/'+classId,{seats:cls.seats});
-    modalMode = 'reservation';
-    clsSeatModal = null;
-    closeModal();
     renderClasses();
-    showToast('✅ '+modalPicked.name.split(' ')[0]+' → '+key.toUpperCase());
+    showToast('✅ '+picked.name.split(' ')[0]+' → '+key.toUpperCase());
   }catch(e){ showToast(e.message); }
 }
  
