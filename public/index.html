@@ -1239,51 +1239,118 @@ async function deleteClass(id){
 function renderClasses(){
   const cont = document.getElementById('classes-list');
   if(!cont) return;
+  const DAYS_LBL = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const LAB_LBL = {hs:'Tech Lab Bachillerato',ms:'Maker Space',primary:'Tech Lab Primaria'};
   if(!myClasses.length){
-    cont.innerHTML='<div class="empty-state">Aún no has creado ninguna clase. Crea tu primera clase arriba.</div>';
+    cont.innerHTML='<div class="empty-state">Aún no has creado ninguna clase.<br>Usa el formulario de arriba para agregar tu primera clase.</div>';
     return;
   }
-  const LAB_N = {hs:'Tech Lab Bachillerato',ms:'Maker Space',primary:'Tech Lab Primaria'};
-  const DAYS_ES = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   cont.innerHTML = myClasses.map(cls => {
     const id = cls._id||cls.id;
     const seats = cls.seats||{};
     const pcs = PC_IDS[cls.lab]||[];
     const pref = PC_PREFIX[cls.lab];
-    const seatsHtml = pcs.map(num => {
-      const key = pref+num;
-      const student = seats[key];
-      return `<div class="cls-seat" id="clsseat-${id}-${key}" onclick="assignClsSeat('${id}','${key}','${cls.lab}')" 
-        style="padding:6px 8px;border:1.5px solid ${student?'var(--blue-m)':'var(--border)'};border-radius:6px;cursor:pointer;font-size:11px;text-align:center;background:${student?'var(--blue-l)':'var(--bg)'};min-width:70px;flex:0 0 auto;transition:all .15s;">
-        <div style="font-weight:700;color:${student?'var(--blue)':'var(--text2)'};">${key.toUpperCase()}</div>
-        <div style="font-size:10px;color:${student?'var(--blue)':'var(--text3)'};">${student?student.name.split(' ')[0]:'—'}</div>
-      </div>`;
-    }).join('');
-    return `<div class="card" style="margin-bottom:1rem;">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+    const assigned = Object.keys(seats).filter(k=>seats[k]).length;
+    // Generate interactive SVG map clone for this class
+    // Get the lab's SVG content and modify it to be class-specific
+    const labSvgEl = document.querySelector('#view-'+cls.lab+' svg');
+    let mapHtml = '';
+    if(labSvgEl){
+      // Clone and adapt the SVG
+      const clone = labSvgEl.cloneNode(true);
+      // Update each PC node with class assignment data
+      pcs.forEach(num => {
+        const key = pref+num;
+        const student = seats[key];
+        // Find the g element in the clone
+        const g = clone.querySelector('#'+pref+'-'+num);
+        if(g){
+          const rect = g.querySelector('.pc-rect');
+          const txt  = g.querySelector('.pc-text');
+          if(student){
+            if(rect){ rect.setAttribute('fill','#E6F1FB'); rect.setAttribute('stroke','#185FA5'); }
+            if(txt) { txt.setAttribute('fill','#185FA5'); txt.textContent=student.name.split(' ')[0]; }
+          } else {
+            if(rect){ rect.setAttribute('fill','#EAF3DE'); rect.setAttribute('stroke','#97C459'); }
+            if(txt) { txt.setAttribute('fill','#3B6D11'); txt.textContent='PC'+num; }
+          }
+          // Update onclick to use class assignment
+          g.setAttribute('onclick', "assignClsSeat('"+id+"','"+key+"','"+cls.lab+"')");
+        }
+      });
+      clone.style.maxWidth = '600px';
+      mapHtml = clone.outerHTML;
+    } else {
+      // Fallback: grid of PC buttons
+      mapHtml = '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + pcs.map(num => {
+        const key = pref+num;
+        const st = seats[key];
+        return `<div onclick="assignClsSeat('${id}','${key}','${cls.lab}')"
+          style="padding:6px 10px;border:1.5px solid ${st?'var(--blue-m)':'var(--border)'};border-radius:6px;cursor:pointer;font-size:11px;text-align:center;background:${st?'var(--blue-l)':'var(--bg)'};min-width:64px;">
+          <div style="font-weight:700;color:${st?'var(--blue)':'var(--text2)'};">${key.toUpperCase()}</div>
+          <div style="font-size:10px;color:${st?'var(--blue)':'var(--text3)'};">${st?st.name.split(' ')[0]:'—'}</div>
+        </div>`;
+      }).join('') + '</div>';
+    }
+    return `<div class="card" style="margin-bottom:1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
         <div>
-          <h3 style="margin:0;font-size:15px;">${cls.name}</h3>
-          <p style="font-size:12px;color:var(--text2);margin-top:3px;">
-            ${LAB_N[cls.lab]} · ${DAYS_ES[cls.day]} · ${cls.start_time}–${cls.end_time} · ${cls.teacher}
+          <h3 style="margin:0;font-size:16px;">${cls.name}</h3>
+          <p style="font-size:12px;color:var(--text2);margin-top:4px;">
+            ${LAB_LBL[cls.lab]} &nbsp;·&nbsp; ${DAYS_LBL[cls.day]} &nbsp;·&nbsp; ${cls.start_time} – ${cls.end_time} &nbsp;·&nbsp; ${cls.teacher}
+            <span style="margin-left:8px;background:var(--blue-l);color:var(--blue);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;">${assigned}/${pcs.length} asignados</span>
           </p>
         </div>
-        <button class="btn-del" onclick="deleteClass('${id}')" title="Eliminar clase">✕</button>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-sm" onclick="clearClassSeats('${id}')" style="font-size:12px;color:var(--red);border-color:var(--red-m);">🗑 Limpiar</button>
+          <button class="btn-del" onclick="deleteClass('${id}')" title="Eliminar clase">✕</button>
+        </div>
       </div>
-      <p style="font-size:12px;color:var(--text2);margin-bottom:8px;">Haz clic en un equipo para asignar o cambiar estudiante:</p>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;">${seatsHtml}</div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:10px;">
+        Clic en un equipo para asignar estudiante. Doble clic para quitar.
+      </p>
+      <div style="overflow-x:auto;">${mapHtml}</div>
     </div>`;
   }).join('');
 }
  
+async function clearClassSeats(classId){
+  if(!confirm('¿Limpiar todas las asignaciones de esta clase?')) return;
+  const cls = myClasses.find(c=>(c._id||c.id)===classId);
+  if(!cls) return;
+  cls.seats = {};
+  try{
+    await api('PUT','/api/myclasses/'+classId,{seats:{}});
+    renderClasses();
+    showToast('Asignaciones limpiadas');
+  }catch(e){ showToast(e.message); }
+}
+ 
 let clsSeatModal = null;
 function assignClsSeat(classId, key, lab){
+  // Check if already assigned — allow removal with second click
+  const cls = myClasses.find(c=>(c._id||c.id)===classId);
+  if(cls && cls.seats && cls.seats[key]){
+    const el = document.getElementById('clsseat-'+classId+'-'+key);
+    if(el && el._removeTimeout){
+      clearTimeout(el._removeTimeout); el._removeTimeout=null;
+      cls.seats[key]=null; delete cls.seats[key];
+      api('PUT','/api/myclasses/'+classId,{seats:cls.seats}).catch(e=>console.error(e));
+      renderClasses();
+      showToast('Quitado: '+key.toUpperCase());
+      return;
+    } else if(el){
+      showToast('Doble clic para quitar a '+cls.seats[key].name.split(' ')[0]);
+      el._removeTimeout=setTimeout(()=>{if(el)el._removeTimeout=null;},2000);
+      return;
+    }
+  }
   clsSeatModal = {classId, key, lab};
   modalPicked = null; modalCatFilter = '';
   document.getElementById('modal-title').textContent = 'Asignar a '+key.toUpperCase();
   document.getElementById('modal-search').value = '';
   renderModalList();
   document.getElementById('modal-overlay').style.display='flex';
-  // Override confirm button for this flow
   document.getElementById('modal-assign-btn').onclick = confirmClsSeat;
 }
  
