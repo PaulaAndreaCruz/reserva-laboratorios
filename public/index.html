@@ -1422,7 +1422,14 @@ function setModalCat(cat,el){
  
 function renderModalList(){
   const q=document.getElementById('modal-search').value.toLowerCase();
-  const usedIds=Object.values(assignments[modalPC.lab]).map(s=>s._id||s.id);
+  // Get used IDs from either reservation or class context
+  let usedIds=[];
+  if(modalMode==='class' && clsSeatModal){
+    const cls=myClasses.find(c=>(c._id||c.id)===clsSeatModal.classId);
+    if(cls&&cls.seats) usedIds=Object.values(cls.seats).filter(Boolean).map(s=>s._id||s.id);
+  } else if(modalPC){
+    usedIds=Object.values(assignments[modalPC.lab]).map(s=>s._id||s.id);
+  }
   let filtered=students.filter(s=>
     !usedIds.includes(s._id||s.id)&&
     (!modalCatFilter||s.category===modalCatFilter)&&
