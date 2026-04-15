@@ -59,11 +59,22 @@ const ConfigSchema = new mongoose.Schema({
   value: { type: String, default: '' }
 });
  
+const MyClassSchema = new mongoose.Schema({
+  name:       { type: String, required: true },
+  lab:        { type: String, required: true },
+  day:        { type: Number, required: true },
+  start_time: { type: String, required: true },
+  end_time:   { type: String, required: true },
+  teacher:    { type: String, required: true },
+  seats:      { type: Object, default: {} }
+});
+ 
 const Student     = mongoose.model('Student',     StudentSchema);
 const Schedule    = mongoose.model('Schedule',    ScheduleSchema);
 const Seat        = mongoose.model('Seat',        SeatSchema);
 const Reservation = mongoose.model('Reservation', ReservationSchema);
 const Config      = mongoose.model('Config',      ConfigSchema);
+const MyClass     = mongoose.model('MyClass',     MyClassSchema);
  
 // ══════════════════════════════════════════════════
 // CONFIG HELPERS
@@ -375,21 +386,27 @@ app.delete('/api/reservations/:id', async (req, res) => {
 // MY CLASSES API
 // ══════════════════════════════════════════════════
 app.get('/api/myclasses', async (req, res) => {
-  const list = await MyClass.find().sort({ lab:1, day:1, start_time:1 });
-  res.json(list);
+  try {
+    const list = await MyClass.find().sort({ lab:1, day:1, start_time:1 });
+    res.json(list);
+  } catch(e) { res.status(500).json({ error: e.message }); }
 });
  
 app.post('/api/myclasses', async (req, res) => {
-  const { name, lab, day, start_time, end_time, teacher, seats } = req.body;
-  if (!name || !lab || day===undefined || !start_time || !end_time || !teacher)
-    return res.status(400).json({ error: 'Todos los campos son requeridos' });
-  const doc = await MyClass.create({ name, lab, day: Number(day), start_time, end_time, teacher, seats: seats||{} });
-  res.json(doc);
+  try {
+    const { name, lab, day, start_time, end_time, teacher, seats } = req.body;
+    if (!name || !lab || day===undefined || !start_time || !end_time || !teacher)
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+    const doc = await MyClass.create({ name, lab, day: Number(day), start_time, end_time, teacher, seats: seats||{} });
+    res.json(doc);
+  } catch(e) { res.status(500).json({ error: e.message }); }
 });
  
 app.put('/api/myclasses/:id', async (req, res) => {
-  const doc = await MyClass.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
-  res.json(doc);
+  try {
+    const doc = await MyClass.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+    res.json(doc || {});
+  } catch(e) { res.status(500).json({ error: e.message }); }
 });
  
 app.delete('/api/myclasses/:id', async (req, res) => {
