@@ -237,6 +237,7 @@ textarea{resize:vertical;min-height:70px;}
     <button id="tab-schedules" class="tab" onclick="switchTab('schedules',this)">🕐 <span id="tab-schedules-lbl">Horarios</span></button>
     <button id="tab-students" class="tab" onclick="switchTab('admin',this)">👥 <span id="tab-students-lbl">Estudiantes</span></button>
     <button id="tab-config" class="tab" onclick="switchTab('config',this)">⚙️ <span id="tab-config-lbl">Config</span></button>
+    <button id="tab-classes" class="tab" onclick="switchTab('classes',this)">📋 <span id="tab-classes-lbl">Mis Clases</span></button>
   </div>
  
   <!-- ════════════ TECH LAB BACHILLERATO — 26 PCs ════════════ -->
@@ -504,6 +505,50 @@ textarea{resize:vertical;min-height:70px;}
   </div>
  
   <!-- ════════════ CONFIGURACIÓN ════════════ -->
+  <div id="view-classes" class="view">
+    <div class="card" style="margin-bottom:1rem;">
+      <h3>📋 Asignación fija de estudiantes por clase</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:1.2rem;">
+        Registra tus clases semanales y asigna permanentemente qué estudiante va en cada equipo. Estas asignaciones no son reservas — son tu mapa fijo de clase para todo el año.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:1rem;">
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--text2);display:block;margin-bottom:4px;">Nombre de la clase</label>
+          <input type="text" id="cls-name" placeholder="Ej. Robótica 10A" style="width:100%;"/>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--text2);display:block;margin-bottom:4px;">Laboratorio</label>
+          <select id="cls-lab" style="width:100%;" onchange="updateClsBlocks()">
+            <option value="hs">Tech Lab Bachillerato</option>
+            <option value="ms">Maker Space</option>
+            <option value="primary">Tech Lab Primaria</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--text2);display:block;margin-bottom:4px;">Día</label>
+          <select id="cls-day" style="width:100%;" onchange="updateClsBlocks()">
+            <option value="0">Lunes</option>
+            <option value="1">Martes</option>
+            <option value="2">Miércoles</option>
+            <option value="3">Jueves</option>
+            <option value="4">Viernes</option>
+            <option value="5">Sábado</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--text2);display:block;margin-bottom:4px;">Bloque horario</label>
+          <select id="cls-block" style="width:100%;"></select>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--text2);display:block;margin-bottom:4px;">Profesor</label>
+          <input type="text" id="cls-teacher" placeholder="Nombre del profesor" style="width:100%;"/>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="addClass()">+ Crear clase</button>
+    </div>
+    <div id="classes-list"></div>
+  </div>
+ 
   <div id="view-config" class="view">
     <div class="card">
       <h3>⚙️ Configuración de correos</h3>
@@ -582,6 +627,66 @@ textarea{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
+ 
+  <div id="view-classes" class="view">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;gap:10px;">
+      <div>
+        <h2 style="margin:0;font-size:18px;font-weight:700;">📋 Mis Clases</h2>
+        <p style="font-size:13px;color:var(--text2);margin-top:4px;">Asigna estudiantes fijos a cada equipo por clase semanal.</p>
+      </div>
+      <button class="btn btn-primary" onclick="showAddClassModal()">+ Nueva clase</button>
+    </div>
+    <div id="classes-list"></div>
+  </div>
+ 
+  <!-- Modal: Nueva clase -->
+  <div class="overlay" id="add-class-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;align-items:center;justify-content:center;">
+    <div style="background:var(--bg);border-radius:var(--rl);padding:1.5rem;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;">
+      <h3 style="margin:0 0 1rem;">Nueva clase permanente</h3>
+      <div class="form-row"><label>Nombre de la clase</label>
+        <input type="text" id="cls-name" placeholder="Ej. Robótica 10A"/>
+      </div>
+      <div class="form-row"><label>Laboratorio</label>
+        <select id="cls-lab">
+          <option value="hs">Tech Lab Bachillerato</option>
+          <option value="ms">Maker Space</option>
+          <option value="primary">Tech Lab Primaria</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="form-row"><label>Día</label>
+          <select id="cls-day">
+            <option value="0">Lunes</option>
+            <option value="1">Martes</option>
+            <option value="2">Miércoles</option>
+            <option value="3">Jueves</option>
+            <option value="4">Viernes</option>
+            <option value="5">Sábado</option>
+          </select>
+        </div>
+        <div class="form-row"><label>Bloque horario</label>
+          <select id="cls-block">
+            <option value="07:15|08:40">07:15 – 08:40</option>
+            <option value="09:10|10:35">09:10 – 10:35</option>
+            <option value="10:35|11:50">10:35 – 11:50</option>
+            <option value="12:35|14:00">12:35 – 14:00</option>
+            <option value="14:00|15:25">14:00 – 15:25</option>
+            <option value="15:45|17:00">15:45 – 17:00</option>
+            <option value="17:00|18:00">17:00 – 18:00</option>
+            <option value="08:00|12:00">08:00 – 12:00 (Sábado)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row"><label>Profesor</label>
+        <input type="text" id="cls-teacher" placeholder="Nombre del profesor"/>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:1rem;">
+        <button class="btn" onclick="document.getElementById('add-class-modal').style.display='none'">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveNewClass()">Crear clase</button>
+      </div>
+    </div>
+  </div>
+ 
  
 <!-- Modal: editar estudiante -->
 <div class="overlay" id="edit-modal">
@@ -839,6 +944,8 @@ async function init(){
     updateSaveButton('ms');
     updateSaveButton('primary');
     updateStaticLabels();
+    loadClasses();
+    updateClsBlocks();
     renderBlocksSelector('hs');
     renderBlocksSelector('ms');
     renderBlocksSelector('primary');
@@ -860,6 +967,8 @@ function switchTab(lab,el){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+lab).classList.add('active');
   if(lab==='report')     renderReport();
+  if(lab==='classes')    renderClasses();
+  if(lab==='classes')    renderClasses();
   else if(lab==='schedules') renderBlocks();
   else if(lab==='admin') renderAdminTable();
   else if(lab==='config') loadConfig();
@@ -1127,6 +1236,122 @@ function updateSaveButton(lab){
 }
  
 // ════════════════════════════════════════
+ 
+// ════════════════════════════════════════
+// MÓDULO MIS CLASES
+// ════════════════════════════════════════
+let myClasses = [];
+ 
+async function loadClasses(){
+  try{ myClasses = await api('GET','/api/myclasses'); }catch(e){ myClasses=[]; }
+  renderClasses();
+  updateClsBlocks();
+}
+ 
+function updateClsBlocks(){
+  const lab = document.getElementById('cls-lab')?.value || 'hs';
+  const day = parseInt(document.getElementById('cls-day')?.value || '0');
+  const sel = document.getElementById('cls-block');
+  if(!sel) return;
+  const isSat = day === 5;
+  const blocks = (TIME_BLOCKS[lab]||[]).filter(b => isSat ? b.saturdayOnly : !b.saturdayOnly);
+  sel.innerHTML = blocks.map(b=>`<option value="${b.start}|${b.end}">${b.label}</option>`).join('');
+}
+ 
+async function addClass(){
+  const name    = document.getElementById('cls-name').value.trim();
+  const lab     = document.getElementById('cls-lab').value;
+  const day     = parseInt(document.getElementById('cls-day').value);
+  const block   = document.getElementById('cls-block').value;
+  const teacher = document.getElementById('cls-teacher').value.trim();
+  if(!name||!block||!teacher){ showToast('Completa todos los campos'); return; }
+  const [start,end] = block.split('|');
+  try{
+    const cls = await api('POST','/api/myclasses',{name,lab,day,start_time:start,end_time:end,teacher,seats:{}});
+    myClasses.push(cls);
+    renderClasses();
+    document.getElementById('cls-name').value='';
+    document.getElementById('cls-teacher').value='';
+    showToast('✅ Clase creada');
+  }catch(e){ showToast(e.message); }
+}
+ 
+async function deleteClass(id){
+  if(!confirm('¿Eliminar esta clase y todas sus asignaciones?')) return;
+  await api('DELETE','/api/myclasses/'+id);
+  myClasses = myClasses.filter(c=>(c._id||c.id)!==id);
+  renderClasses();
+  showToast('Clase eliminada');
+}
+ 
+function renderClasses(){
+  const cont = document.getElementById('classes-list');
+  if(!cont) return;
+  if(!myClasses.length){
+    cont.innerHTML='<div class="empty-state">Aún no has creado ninguna clase. Crea tu primera clase arriba.</div>';
+    return;
+  }
+  const LAB_N = {hs:'Tech Lab Bachillerato',ms:'Maker Space',primary:'Tech Lab Primaria'};
+  const DAYS_ES = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  cont.innerHTML = myClasses.map(cls => {
+    const id = cls._id||cls.id;
+    const seats = cls.seats||{};
+    const pcs = PC_IDS[cls.lab]||[];
+    const pref = PC_PREFIX[cls.lab];
+    const seatsHtml = pcs.map(num => {
+      const key = pref+num;
+      const student = seats[key];
+      return `<div class="cls-seat" id="clsseat-${id}-${key}" onclick="assignClsSeat('${id}','${key}','${cls.lab}')" 
+        style="padding:6px 8px;border:1.5px solid ${student?'var(--blue-m)':'var(--border)'};border-radius:6px;cursor:pointer;font-size:11px;text-align:center;background:${student?'var(--blue-l)':'var(--bg)'};min-width:70px;flex:0 0 auto;transition:all .15s;">
+        <div style="font-weight:700;color:${student?'var(--blue)':'var(--text2)'};">${key.toUpperCase()}</div>
+        <div style="font-size:10px;color:${student?'var(--blue)':'var(--text3)'};">${student?student.name.split(' ')[0]:'—'}</div>
+      </div>`;
+    }).join('');
+    return `<div class="card" style="margin-bottom:1rem;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <h3 style="margin:0;font-size:15px;">${cls.name}</h3>
+          <p style="font-size:12px;color:var(--text2);margin-top:3px;">
+            ${LAB_N[cls.lab]} · ${DAYS_ES[cls.day]} · ${cls.start_time}–${cls.end_time} · ${cls.teacher}
+          </p>
+        </div>
+        <button class="btn-del" onclick="deleteClass('${id}')" title="Eliminar clase">✕</button>
+      </div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:8px;">Haz clic en un equipo para asignar o cambiar estudiante:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">${seatsHtml}</div>
+    </div>`;
+  }).join('');
+}
+ 
+let clsSeatModal = null;
+function assignClsSeat(classId, key, lab){
+  clsSeatModal = {classId, key, lab};
+  modalPicked = null; modalCatFilter = '';
+  document.getElementById('modal-title').textContent = 'Asignar a '+key.toUpperCase();
+  document.getElementById('modal-search').value = '';
+  renderModalList();
+  document.getElementById('modal-overlay').style.display='flex';
+  // Override confirm button for this flow
+  document.getElementById('modal-assign-btn').onclick = confirmClsSeat;
+}
+ 
+async function confirmClsSeat(){
+  if(!modalPicked||!clsSeatModal) return;
+  const {classId,key,lab} = clsSeatModal;
+  const cls = myClasses.find(c=>(c._id||c.id)===classId);
+  if(!cls) return;
+  if(!cls.seats) cls.seats={};
+  cls.seats[key] = modalPicked;
+  try{
+    await api('PUT','/api/myclasses/'+classId,{seats:cls.seats});
+    closeModal();
+    renderClasses();
+    showToast('✅ '+modalPicked.name.split(' ')[0]+' asignado a '+key.toUpperCase());
+  }catch(e){ showToast(e.message); }
+  // Restore default confirm behavior
+  document.getElementById('modal-assign-btn').onclick = confirmStudent;
+}
+ 
 // SELECCIÓN DE PC
 // ════════════════════════════════════════
 function selectPC(lab,num){
@@ -1138,7 +1363,12 @@ function selectPC(lab,num){
   if(assignments[lab][key]){
     if(confirm('¿Quitar a '+assignments[lab][key].name+' del '+key.toUpperCase()+'?')){
       delete assignments[lab][key];
-      el.className='pc free'; el.textContent='PC'+num;
+      const rect=el.querySelector('.pc-rect');
+      const txt=el.querySelector('.pc-text');
+      if(rect&&txt){
+        rect.setAttribute('fill','#EAF3DE');rect.setAttribute('stroke','#97C459');
+        txt.setAttribute('fill','#3B6D11');txt.textContent='PC'+num;
+      }
       renderSidebar(lab);
     }
     return;
@@ -1190,10 +1420,10 @@ function confirmStudent(){
   if(el){
     const rect=el.querySelector('.pc-rect');
     const txt=el.querySelector('.pc-text');
-    if(rect){rect.setAttribute('fill','#FCEBEB');rect.setAttribute('stroke','#E24B4A');}
-    if(txt){txt.setAttribute('fill','#A32D2D');txt.textContent=modalPicked.name.split(' ')[0];}
-    // fallback for div-based
-    if(el.className!==undefined&&typeof el.className==='string'){el.className='pc occupied';el.textContent=modalPicked.name.split(' ')[0];}
+    if(rect && txt){
+      rect.setAttribute('fill','#FCEBEB');rect.setAttribute('stroke','#E24B4A');
+      txt.setAttribute('fill','#A32D2D');txt.textContent=modalPicked.name.split(' ')[0];
+    }
   }
   closeModal(); renderSidebar(lab);
 }
@@ -1242,7 +1472,7 @@ async function saveReservation(lab){
         const txt=el.querySelector('.pc-text');
         if(rect){rect.setAttribute('fill','#EAF3DE');rect.setAttribute('stroke','#97C459');}
         if(txt){txt.setAttribute('fill','#3B6D11');txt.textContent='PC'+num;}
-        if(typeof el.className==='string'){el.className='pc free';el.textContent='PC'+num;}
+ 
       }
     });
     assignments[lab]={};
@@ -1678,6 +1908,114 @@ function showToast(msg){
 // ARRANQUE
 // ════════════════════════════════════════
 init();
+// ════════════════════════════════════════
+// MÓDULO: MIS CLASES (asignación permanente)
+// ════════════════════════════════════════
+const DAYS_ES = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const LAB_N = {hs:'Tech Lab Bachillerato', ms:'Maker Space', primary:'Tech Lab Primaria'};
+ 
+let myClasses = JSON.parse(localStorage.getItem('gcf_classes')||'{}');
+ 
+function saveClasses(){
+  try{ localStorage.setItem('gcf_classes', JSON.stringify(myClasses)); }catch(e){}
+}
+ 
+function showAddClassModal(){
+  document.getElementById('add-class-modal').style.display='flex';
+}
+ 
+function saveNewClass(){
+  const name    = document.getElementById('cls-name').value.trim();
+  const lab     = document.getElementById('cls-lab').value;
+  const day     = Number(document.getElementById('cls-day').value);
+  const block   = document.getElementById('cls-block').value;
+  const teacher = document.getElementById('cls-teacher').value.trim();
+  if(!name || !teacher){ showToast('Completa nombre y profesor'); return; }
+  const [start_time, end_time] = block.split('|');
+  const id = Date.now().toString(36);
+  myClasses[id] = { id, name, lab, day, start_time, end_time, teacher, seats:{} };
+  saveClasses();
+  document.getElementById('add-class-modal').style.display='none';
+  document.getElementById('cls-name').value='';
+  document.getElementById('cls-teacher').value='';
+  renderClasses();
+  showToast('✅ Clase creada');
+}
+ 
+function deleteClass(id){
+  if(!confirm('¿Eliminar esta clase y todas sus asignaciones?')) return;
+  delete myClasses[id];
+  saveClasses();
+  renderClasses();
+  showToast('Clase eliminada');
+}
+ 
+function renderClasses(){
+  const container = document.getElementById('classes-list');
+  if(!container) return;
+  const entries = Object.entries(myClasses);
+  if(!entries.length){
+    container.innerHTML = `<div class="empty-state">No tienes clases creadas.<br>Haz clic en <strong>+ Nueva clase</strong> para agregar una.</div>`;
+    return;
+  }
+  container.innerHTML = entries.map(([id, cls]) => {
+    const pref = PC_PREFIX[cls.lab];
+    const pcs  = PC_IDS[cls.lab] || [];
+    const seats = cls.seats || {};
+    const seatsHtml = pcs.map(num => {
+      const key = pref+num;
+      const student = seats[key];
+      return `<div class="cls-seat" id="clsseat-${id}-${key}" onclick="assignClsSeat('${id}','${key}','${cls.lab}')"
+        style="padding:6px 8px;border:1.5px solid ${student?'var(--blue-m)':'var(--border)'};border-radius:6px;cursor:pointer;font-size:11px;text-align:center;background:${student?'var(--blue-l)':'var(--bg)'};min-width:70px;flex:0 0 auto;transition:all .15s;">
+        <div style="font-weight:700;color:${student?'var(--blue)':'var(--text2)'};">${key.toUpperCase()}</div>
+        <div style="font-size:10px;color:${student?'var(--blue)':'var(--text3)'};">${student?student.name.split(' ')[0]:'—'}</div>
+      </div>`;
+    }).join('');
+    const assigned = Object.keys(seats).length;
+    return `<div class="card" style="margin-bottom:1rem;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <h3 style="margin:0;font-size:15px;">${cls.name}</h3>
+          <p style="font-size:12px;color:var(--text2);margin-top:3px;">
+            ${LAB_N[cls.lab]} · ${DAYS_ES[cls.day]} · ${cls.start_time}–${cls.end_time} · ${cls.teacher}
+            <span style="margin-left:8px;background:var(--blue-l);color:var(--blue);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;">${assigned} asignados</span>
+          </p>
+        </div>
+        <button class="btn-del" onclick="deleteClass('${id}')" title="Eliminar clase">✕</button>
+      </div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:8px;">Clic en un equipo para asignar o cambiar estudiante:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">${seatsHtml}</div>
+    </div>`;
+  }).join('');
+}
+ 
+let clsSeatModal = null;
+function assignClsSeat(classId, key, lab){
+  clsSeatModal = {classId, key, lab};
+  modalPicked = null; modalCatFilter = '';
+  document.getElementById('modal-title').textContent = 'Asignar a '+key.toUpperCase();
+  document.getElementById('modal-search').value = '';
+  renderModalList();
+  document.getElementById('student-modal').classList.add('open');
+  // Override confirm to use class seat flow
+  document.querySelector('#student-modal .btn-confirm').onclick = confirmClsSeat;
+}
+ 
+function confirmClsSeat(){
+  if(!modalPicked || !clsSeatModal) return;
+  const {classId, key} = clsSeatModal;
+  if(!myClasses[classId]) return;
+  myClasses[classId].seats[key] = modalPicked;
+  saveClasses();
+  closeModal();
+  renderClasses();
+  showToast('✅ '+key.toUpperCase()+' → '+modalPicked.name.split(' ')[0]);
+  clsSeatModal = null;
+  // Restore default confirm action
+  document.querySelector('#student-modal .btn-confirm').onclick = confirmStudent;
+}
+ 
+ 
 </script>
 </body>
 </html>
