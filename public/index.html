@@ -20,10 +20,18 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f6;color:#1a1a1a;fo
   --r:8px;--rl:12px;
 }
 .app{max-width:1300px;margin:0 auto;padding:1.5rem 1rem 4rem;}
-.header{margin-bottom:1.5rem;display:flex;align-items:center;gap:14px;}
-.header-icon{width:46px;height:46px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-.header h1{font-size:22px;font-weight:700;}
-.header p{font-size:13px;color:var(--text2);margin-top:2px;}
+.header{margin-bottom:0;display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#042C53 0%,#185FA5 60%,#0F6E56 100%);border-radius:var(--rl);padding:14px 20px;margin-bottom:1.2rem;position:relative;overflow:hidden;}
+.header::before{content:'';position:absolute;top:-20px;right:80px;width:120px;height:120px;border-radius:50%;background:rgba(55,138,221,0.15);pointer-events:none;}
+.header::after{content:'';position:absolute;bottom:-30px;right:200px;width:90px;height:90px;border-radius:50%;background:rgba(15,110,86,0.2);pointer-events:none;}
+.header-mascot{flex-shrink:0;z-index:1;}.header-logo{flex-shrink:0;z-index:1;}
+.header-text{flex:1;z-index:1;}
+.header-brand{display:flex;align-items:center;gap:12px;}
+.header-gcf{font-size:28px;font-weight:900;color:#EF9F27;letter-spacing:2px;text-shadow:0 0 20px rgba(239,159,39,0.4);font-family:'Segoe UI',Arial,sans-serif;}
+.header h1{font-size:20px;font-weight:700;color:#fff;line-height:1.2;}
+.header p{font-size:12px;color:#B5D4F4;margin-top:3px;}
+.header-actions{z-index:1;flex-shrink:0;}
+.lang-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.3);border-radius:20px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;backdrop-filter:blur(4px);}
+.lang-btn:hover{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5);}
 .tabs{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center;border-bottom:2px solid var(--border);padding-bottom:10px;}
 .tab{padding:8px 15px;border:1px solid var(--border2);border-radius:var(--r);font-size:13px;cursor:pointer;background:var(--bg);color:var(--text2);font-family:inherit;font-weight:500;transition:all .15s;}
 .tab.active{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700;}
@@ -150,23 +158,87 @@ textarea{resize:vertical;min-height:70px;}
 <body>
 <div class="app">
   <div class="header">
-    <div class="header-icon">🖥</div>
-    <div>
-      <h1>Reserva de Laboratorios</h1>
-      <p>Tech Lab Bachillerato · Maker Space · Tech Lab Primaria</p>
+    <!-- Logo izquierdo -->
+    <div class="header-logo">
+      <img src="https://www.lafontana.edu.co/wp-content/uploads/2023/10/REDES-FONTANA.png"
+           alt="Gimnasio Campestre La Fontana"
+           style="width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.3);"/>
+    </div>
+    <!-- Texto central -->
+    <div class="header-text">
+      <div class="header-brand">
+        <span class="header-gcf">GCF</span>
+        <div>
+          <h1 id="app-title">Reserva de Laboratorios</h1>
+          <p id="app-subtitle">Tech Lab Bachillerato · Maker Space · Tech Lab Primaria</p>
+        </div>
+      </div>
+    </div>
+    <!-- Acciones + canguro derecho -->
+    <div class="header-actions">
+      <button id="lang-btn" onclick="toggleLang()" class="lang-btn" title="Cambiar idioma / Change language">
+        <span>🇬🇧</span> EN
+      </button>
+    </div>
+    <!-- Canguro mascota derecho -->
+    <div class="header-mascot">
+      <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="width:72px;height:72px;">
+        <circle cx="40" cy="40" r="38" fill="#0C447C" stroke="#185FA5" stroke-width="2"/>
+        <line x1="10" y1="25" x2="25" y2="25" stroke="#378ADD" stroke-width="1" opacity="0.6"/>
+        <line x1="25" y1="25" x2="25" y2="15" stroke="#378ADD" stroke-width="1" opacity="0.6"/>
+        <line x1="55" y1="25" x2="70" y2="25" stroke="#378ADD" stroke-width="1" opacity="0.6"/>
+        <line x1="55" y1="25" x2="55" y2="15" stroke="#378ADD" stroke-width="1" opacity="0.6"/>
+        <line x1="10" y1="55" x2="22" y2="55" stroke="#378ADD" stroke-width="1" opacity="0.6"/>
+        <line x1="58" y1="55" x2="70" y2="55" stroke="#378ADD" stroke-width="1" opacity="0.6"/>
+        <circle cx="25" cy="15" r="2" fill="#85B7EB"/>
+        <circle cx="55" cy="15" r="2" fill="#85B7EB"/>
+        <circle cx="22" cy="55" r="2" fill="#85B7EB"/>
+        <circle cx="58" cy="55" r="2" fill="#85B7EB"/>
+        <ellipse cx="40" cy="48" rx="13" ry="16" fill="#EF9F27" stroke="#BA7517" stroke-width="1.5"/>
+        <ellipse cx="40" cy="28" rx="10" ry="9" fill="#EF9F27" stroke="#BA7517" stroke-width="1.5"/>
+        <ellipse cx="44" cy="32" rx="5" ry="3.5" fill="#FAC775"/>
+        <ellipse cx="46" cy="31" rx="1.5" ry="1" fill="#BA7517"/>
+        <circle cx="38" cy="26" r="2.5" fill="white"/>
+        <circle cx="38.5" cy="26.5" r="1.2" fill="#0C447C"/>
+        <circle cx="38.8" cy="26.2" r="0.4" fill="white"/>
+        <ellipse cx="33" cy="20" rx="3" ry="5" fill="#EF9F27" stroke="#BA7517" stroke-width="1"/>
+        <ellipse cx="33" cy="20" rx="1.5" ry="3" fill="#FAC775"/>
+        <ellipse cx="47" cy="20" rx="3" ry="5" fill="#EF9F27" stroke="#BA7517" stroke-width="1"/>
+        <ellipse cx="47" cy="20" rx="1.5" ry="3" fill="#FAC775"/>
+        <path d="M53,58 Q62,62 60,70 Q56,68 52,65" fill="#EF9F27" stroke="#BA7517" stroke-width="1.5"/>
+        <ellipse cx="38" cy="52" rx="7" ry="5" fill="#FAC775" stroke="#BA7517" stroke-width="1"/>
+        <rect x="34" y="49" width="8" height="6" rx="1.5" fill="#185FA5" stroke="#378ADD" stroke-width="0.8"/>
+        <line x1="34" y1="51" x2="32" y2="51" stroke="#85B7EB" stroke-width="0.8"/>
+        <line x1="34" y1="53" x2="32" y2="53" stroke="#85B7EB" stroke-width="0.8"/>
+        <line x1="42" y1="51" x2="44" y2="51" stroke="#85B7EB" stroke-width="0.8"/>
+        <line x1="42" y1="53" x2="44" y2="53" stroke="#85B7EB" stroke-width="0.8"/>
+        <text x="38" y="54" text-anchor="middle" font-size="5" font-weight="700" fill="#B5D4F4">GCF</text>
+        <path d="M27,44 Q20,46 21,52" fill="none" stroke="#EF9F27" stroke-width="3" stroke-linecap="round"/>
+        <path d="M53,44 Q60,46 59,52" fill="none" stroke="#EF9F27" stroke-width="3" stroke-linecap="round"/>
+        <path d="M34,62 Q32,70 28,73" fill="none" stroke="#EF9F27" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M46,62 Q48,70 52,73" fill="none" stroke="#EF9F27" stroke-width="3.5" stroke-linecap="round"/>
+        <ellipse cx="27" cy="73" rx="4" ry="2" fill="#BA7517"/>
+        <ellipse cx="53" cy="73" rx="4" ry="2" fill="#BA7517"/>
+        <circle cx="20" cy="42" r="5" fill="none" stroke="#97C459" stroke-width="1.5"/>
+        <circle cx="20" cy="42" r="2" fill="#97C459"/>
+        <line x1="20" y1="36" x2="20" y2="38" stroke="#97C459" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="20" y1="46" x2="20" y2="48" stroke="#97C459" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="14" y1="42" x2="16" y2="42" stroke="#97C459" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="24" y1="42" x2="26" y2="42" stroke="#97C459" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
     </div>
   </div>
- 
+
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('hs',this)">Tech Lab Bachillerato</button>
-    <button class="tab" onclick="switchTab('ms',this)">Maker Space</button>
-    <button class="tab" onclick="switchTab('primary',this)">Tech Lab Primaria</button>
+    <button id="tab-hs" class="tab active" onclick="switchTab('hs',this)">Tech Lab Bachillerato</button>
+    <button id="tab-ms" class="tab" onclick="switchTab('ms',this)">Maker Space</button>
+    <button id="tab-primary" class="tab" onclick="switchTab('primary',this)">Tech Lab Primaria</button>
     <button class="tab" onclick="switchTab('report',this)" style="margin-left:auto">📊 Reporte</button>
-    <button class="tab" onclick="switchTab('schedules',this)">🕐 Horarios</button>
-    <button class="tab" onclick="switchTab('admin',this)">👥 Estudiantes</button>
-    <button class="tab" onclick="switchTab('config',this)">⚙️ Config</button>
+    <button id="tab-schedules" class="tab" onclick="switchTab('schedules',this)">🕐 <span id="tab-schedules-lbl">Horarios</span></button>
+    <button id="tab-students" class="tab" onclick="switchTab('admin',this)">👥 <span id="tab-students-lbl">Estudiantes</span></button>
+    <button id="tab-config" class="tab" onclick="switchTab('config',this)">⚙️ <span id="tab-config-lbl">Config</span></button>
   </div>
- 
+
   <!-- ════════════ TECH LAB BACHILLERATO — 26 PCs ════════════ -->
   <div id="view-hs" class="view active">
     <div class="lab-layout">
@@ -219,7 +291,7 @@ textarea{resize:vertical;min-height:70px;}
       <div class="sidebar" id="sidebar-hs"></div>
     </div>
   </div>
- 
+
   <!-- ════════════ MAKER SPACE — 6 PCs ════════════ -->
   <div id="view-ms" class="view">
     <div class="lab-layout">
@@ -253,7 +325,7 @@ textarea{resize:vertical;min-height:70px;}
       <div class="sidebar" id="sidebar-ms"></div>
     </div>
   </div>
- 
+
   <!-- ════════════ TECH LAB PRIMARIA — 22 PCs ════════════ -->
   <div id="view-primary" class="view">
     <div class="lab-layout">
@@ -303,7 +375,7 @@ textarea{resize:vertical;min-height:70px;}
       <div class="sidebar" id="sidebar-primary"></div>
     </div>
   </div>
- 
+
   <!-- ════════════ REPORTE ════════════ -->
   <div id="view-report" class="view">
     <div class="card">
@@ -324,7 +396,7 @@ textarea{resize:vertical;min-height:70px;}
       <div style="overflow-x:auto;" id="rep-content"></div>
     </div>
   </div>
- 
+
   <!-- ════════════ HORARIOS ════════════ -->
   <div id="view-schedules" class="view">
     <div class="card">
@@ -362,7 +434,7 @@ textarea{resize:vertical;min-height:70px;}
       <div id="blocks-display"></div>
     </div>
   </div>
- 
+
   <!-- ════════════ ESTUDIANTES ════════════ -->
   <div id="view-admin" class="view">
     <div class="two-col">
@@ -430,7 +502,7 @@ textarea{resize:vertical;min-height:70px;}
       </div>
     </div>
   </div>
- 
+
   <!-- ════════════ CONFIGURACIÓN ════════════ -->
   <div id="view-config" class="view">
     <div class="card">
@@ -472,7 +544,7 @@ textarea{resize:vertical;min-height:70px;}
       </div>
       <div id="config-msg" style="margin-top:12px;"></div>
     </div>
- 
+
     <div class="card" style="margin-top:1rem">
       <h3>ℹ️ Instrucciones para Gmail</h3>
       <ol style="font-size:13px;color:var(--text2);line-height:2;padding-left:1.25rem;">
@@ -485,7 +557,7 @@ textarea{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
- 
+
 <!-- Modal: asignar estudiante -->
 <div class="overlay" id="student-modal">
   <div class="modal">
@@ -501,7 +573,7 @@ textarea{resize:vertical;min-height:70px;}
     </div>
     <div class="form-row">
       <label>Buscar estudiante</label>
-      <input type="text" id="modal-search" placeholder="Nombre o grupo..." oninput="renderModalList()"/>
+      <input type="text" id="modal-search" id="modal-search-input" placeholder="Nombre o grupo..." oninput="renderModalList()"/>
     </div>
     <div class="s-list" id="modal-list"></div>
     <div class="modal-acts">
@@ -510,7 +582,7 @@ textarea{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
- 
+
 <!-- Modal: editar estudiante -->
 <div class="overlay" id="edit-modal">
   <div class="modal">
@@ -531,9 +603,9 @@ textarea{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
- 
+
 <div class="toast" id="toast"></div>
- 
+
 <script>
 // ════════════════════════════════════════
 // CONSTANTES
@@ -547,7 +619,7 @@ const PC_IDS = {
   primary: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
 };
 const CAT_LABELS = {curso:'Curso', escuela:'Escuela', club:'Club'};
- 
+
 // Bloques horarios por laboratorio
 const TIME_BLOCKS = {
   hs: [
@@ -586,10 +658,118 @@ const GROUP_PLACEHOLDERS = {
   escuela:'Ej. Escuela de Robótica',
   club:'Ej. Club de Inglés'
 };
- 
+
 // ════════════════════════════════════════
 // ESTADO
 // ════════════════════════════════════════
+
+// ═══════════════════ TRANSLATIONS ═══════════════════
+const LANG = {
+  es: {
+    appTitle:'Reserva de Laboratorios',appSubtitle:'Tech Lab Bachillerato · Maker Space · Tech Lab Primaria',
+    tabHS:'Tech Lab Bachillerato',tabMS:'Maker Space',tabPrimary:'Tech Lab Primaria',
+    tabReport:'Reporte',tabSchedules:'Horarios',tabStudents:'Estudiantes',tabConfig:'Config',
+    newReservation:'Nueva reserva',teacher:'Profesor',teacherEmail:'Correo del profesor',
+    date:'Fecha',timeBlock:'Bloque horario',subject:'Materia',topic:'Tema a abarcar',
+    assignedSeats:'Equipos asignados',saveReservation:'Guardar reserva',
+    currentState:'Estado actual',equipment:'Equipos',free:'Libres',assigned:'Asignados',reservations:'Reservas',
+    selectDateFirst:'Selecciona primero una fecha',
+    sundayUnavailable:'Los domingos no están disponibles para reservas.',
+    blocksAvailable:'bloque(s) disponible(s)',
+    noBlocksAvailable:'No hay bloques disponibles para este día.',
+    blockedByClass:'Bloqueado por clase',alreadyReserved:'Ya reservado',
+    saveReservationBtn:'Guardar reserva',completeFields:'Completa nombre, fecha y horario',
+    reservationSaved:'Reserva guardada — correo enviado',
+    libre:'Libre',ocupado:'Ocupado',mesa:'Mesa',
+    days:['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+    cats:{curso:'Curso',escuela:'Escuela',club:'Club'},
+    assignTo:'Asignar a',cancel:'Cancelar',assign:'Asignar',
+    searchStudent:'Nombre o grupo...',
+    allCats:'Todos',courses:'Cursos',schools:'Escuelas',clubs:'Clubs',
+    report:'Reporte de reservas',allLabs:'Todos los laboratorios',cleanFilter:'Limpiar',printPDF:'Imprimir / PDF',
+    deleteSelected:'Eliminar seleccionadas',selectAll:'Seleccionar todas',
+    deleteConfirm:'¿Eliminar esta reserva?',deleted:'reserva(s) eliminada(s)',
+    scheduleTitle:'Horarios bloqueados para reserva',
+    addBlock:'AGREGAR BLOQUE',lab:'Laboratorio',day:'Día',startTime:'Hora inicio',endTime:'Hora fin',addBtn:'+ Agregar',
+    studentsTitle:'Gestión de Estudiantes',
+    nameLabel:'Nombre completo',categoryLabel:'Categoría',groupLabel:'Grupo / Curso / Club',emailLabel:'Correo electrónico (opcional)',
+    addStudent:'Agregar estudiante',importExcel:'Importar Excel/CSV',
+    promoteTitle:'Promoción / cambio masivo',fromGroup:'Grupo actual',toGroup:'Grupo nuevo',promote:'Promover',
+    configTitle:'Configuración de correos',saveConfig:'Guardar configuración',testEmail:'Enviar correo de prueba',
+    importTitle:'Importar',confirmImport:'✅ Confirmar importación',imported:'Importados',omitted:'Omitidos',
+    satBadge:'Sáb',
+  },
+  en: {
+    appTitle:'Lab Reservation System',appSubtitle:'HS Tech Lab · Maker Space · Primary Tech Lab',
+    tabHS:'HS Tech Lab',tabMS:'Maker Space',tabPrimary:'Primary Tech Lab',
+    tabReport:'Report',tabSchedules:'Schedules',tabStudents:'Students',tabConfig:'Settings',
+    newReservation:'New reservation',teacher:'Teacher',teacherEmail:"Teacher's email",
+    date:'Date',timeBlock:'Time block',subject:'Subject',topic:'Topic / Activity',
+    assignedSeats:'Assigned seats',saveReservation:'Save reservation',
+    currentState:'Current status',equipment:'Computers',free:'Available',assigned:'Assigned',reservations:'Reservations',
+    selectDateFirst:'Select a date first',
+    sundayUnavailable:'Sundays are not available.',
+    blocksAvailable:'block(s) available',
+    noBlocksAvailable:'No blocks available for this day.',
+    blockedByClass:'Blocked by class',alreadyReserved:'Already reserved',
+    saveReservationBtn:'Save reservation',completeFields:'Complete name, date and time',
+    reservationSaved:'Reservation saved — email sent',
+    libre:'Available',ocupado:'Occupied',mesa:'Workstation',
+    days:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+    cats:{curso:'Course',escuela:'School',club:'Club'},
+    assignTo:'Assign to',cancel:'Cancel',assign:'Assign',
+    searchStudent:'Name or group...',
+    allCats:'All',courses:'Courses',schools:'Schools',clubs:'Clubs',
+    report:'Reservation report',allLabs:'All labs',cleanFilter:'Clear',printPDF:'Print / PDF',
+    deleteSelected:'Delete selected',selectAll:'Select all',
+    deleteConfirm:'Delete this reservation?',deleted:'reservation(s) deleted',
+    scheduleTitle:'Blocked time slots',
+    addBlock:'ADD BLOCK',lab:'Lab',day:'Day',startTime:'Start time',endTime:'End time',addBtn:'+ Add',
+    studentsTitle:'Student Management',
+    nameLabel:'Full name',categoryLabel:'Category',groupLabel:'Group / Grade / Club',emailLabel:'Email (optional)',
+    addStudent:'Add student',importExcel:'Import Excel/CSV',
+    promoteTitle:'Mass group change',fromGroup:'Current group',toGroup:'New group',promote:'Promote',
+    configTitle:'Email settings',saveConfig:'Save settings',testEmail:'Send test email',
+    importTitle:'Import',confirmImport:'✅ Confirm import',imported:'Imported',omitted:'Skipped',
+    satBadge:'Sat',
+  }
+};
+let currentLang = (typeof localStorage !== 'undefined' && localStorage.getItem('gcf_lang')) || 'es';
+function t(k){ return (LANG[currentLang]&&LANG[currentLang][k])||LANG.es[k]||k; }
+function toggleLang(){
+  currentLang = currentLang==='es'?'en':'es';
+  try{ localStorage.setItem('gcf_lang',currentLang); }catch(e){}
+  const btn=document.getElementById('lang-btn');
+  if(btn) btn.innerHTML = currentLang==='es'?'<span>🇬🇧</span> EN':'<span>🇨🇴</span> ES';
+  updateStaticLabels();
+  ['hs','ms','primary'].forEach(l=>{ renderSidebar(l); setTimeout(()=>renderBlocksSelector(l),30); });
+  renderReport(); renderSchedules(); renderAdminTable();
+}
+function updateStaticLabels(){
+  [['app-title',t('appTitle')],['app-subtitle',t('appSubtitle')],
+   ['tab-hs',t('tabHS')],['tab-ms',t('tabMS')],['tab-primary',t('tabPrimary')],
+   ['tab-report',t('tabReport')],['tab-schedules',t('tabSchedules')],
+   ['tab-students',t('tabStudents')],['tab-config',t('tabConfig')]
+  ].forEach(([id,val])=>{ const el=document.getElementById(id); if(el) el.textContent=val; });
+  // Update modal static elements
+  const mcancel=document.getElementById('modal-cancel-btn');
+  if(mcancel) mcancel.textContent=t('cancel');
+  const massign=document.getElementById('modal-assign-btn');
+  if(massign) massign.textContent=t('assign');
+  const msearch=document.getElementById('modal-search-input');
+  if(msearch) msearch.placeholder=t('searchStudent');
+  const mcatAll=document.getElementById('modal-cat-all');
+  if(mcatAll) mcatAll.textContent=t('allCats');
+  // Update SVG legend text nodes
+  document.querySelectorAll('.pc-legend-libre').forEach(el=>el.textContent=t('libre'));
+  document.querySelectorAll('.pc-legend-ocupado').forEach(el=>el.textContent=t('ocupado'));
+  document.querySelectorAll('.pc-legend-mesa').forEach(el=>el.textContent=t('mesa'));
+  // Update report title
+  const rt=document.getElementById('rep-title'); if(rt) rt.textContent=t('report');
+  // Update select all checkbox label
+  document.querySelectorAll('.select-all-label').forEach(el=>el.textContent=t('selectAll'));
+}
+
 let students=[], blockedSchedules=[], reservations=[];
 let assignments={hs:{},ms:{},primary:{}};
 let form={
@@ -598,7 +778,7 @@ let form={
   primary:{teacher:'',teacherEmail:'',date:'',startTime:'',endTime:'',subject:'',topic:''}
 };
 let modalPC=null, modalPicked=null, editingId=null, modalCatFilter='';
- 
+
 // ════════════════════════════════════════
 // API
 // ════════════════════════════════════════
@@ -609,7 +789,7 @@ async function api(method,url,body){
   if(!r.ok){const e=await r.json();throw new Error(e.error||'Error del servidor');}
   return r.json();
 }
- 
+
 // ════════════════════════════════════════
 // DÍAS HÁBILES — 5 días de anticipación
 // ════════════════════════════════════════
@@ -641,7 +821,7 @@ function isValidReservationDate(dateStr){
   const minDate = dateToStr(getMinReservationDate());
   return dateStr >= minDate;
 }
- 
+
 // ════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════
@@ -658,6 +838,7 @@ async function init(){
     updateSaveButton('hs');
     updateSaveButton('ms');
     updateSaveButton('primary');
+    updateStaticLabels();
     renderBlocksSelector('hs');
     renderBlocksSelector('ms');
     renderBlocksSelector('primary');
@@ -669,7 +850,7 @@ async function init(){
     console.error(e);
   }
 }
- 
+
 // ════════════════════════════════════════
 // NAVEGACIÓN
 // ════════════════════════════════════════
@@ -684,7 +865,7 @@ function switchTab(lab,el){
   else if(lab==='config') loadConfig();
   else { renderSidebar(lab); setTimeout(()=>renderBlocksSelector(lab),50); }
 }
- 
+
 // ════════════════════════════════════════
 // HORARIOS BLOQUEADOS
 // ════════════════════════════════════════
@@ -742,7 +923,7 @@ function renderBlocks(){
   document.getElementById('blocks-display').innerHTML=html||
     '<p style="font-size:13px;color:var(--text3);margin-top:1rem;">No hay bloques configurados aún.</p>';
 }
- 
+
 // ════════════════════════════════════════
 // SIDEBAR
 // ════════════════════════════════════════
@@ -755,71 +936,69 @@ function renderSidebar(lab){
   const minDate=dateToStr(getMinReservationDate());
   const occ=sel.length;
   const total=PC_IDS[lab].length;
- 
+
   const selHtml=sel.length===0
-    ?'<span style="color:var(--text3);">Haz clic en los equipos del mapa para asignar estudiantes</span>'
+    ?`<span style="color:var(--text3);">${t('assignedSeats')==='Equipos asignados'?'Haz clic en los equipos del mapa para asignar estudiantes':'Click on computers in the map to assign students'}</span>`
     :sel.map(([pc,s])=>`<span style="display:inline-block;margin:2px 3px 2px 0;">
         <strong>${pc.toUpperCase()}:</strong> ${s.name}
         <span style="font-size:10px;color:var(--text2);">(${s.group_name})</span>
       </span>`).join('');
- 
+
   const blockedBanner=blocked
-    ?`<div class="banner banner-amber"><strong>⚠ Horario bloqueado por clase</strong>El ${DAYS[blocked.day]} de ${blocked.start_time} a ${blocked.end_time} está reservado para clase.</div>`:'';
- 
+    ?`<div class="banner banner-amber"><strong>⚠ ${t('blockedByClass')}</strong>${t('days')[blocked.day]}, ${blocked.start_time}–${blocked.end_time}</div>`:'';
+
   const dateBanner=dateSet&&!dateValid
-    ?`<div class="banner banner-red"><strong>⛔ Fecha no permitida</strong>Las reservas deben hacerse con mínimo 5 días hábiles de anticipación. La fecha mínima disponible es ${fmtDate(minDate)}.</div>`:'';
- 
+    ?`<div class="banner banner-red"><strong>⛔ ${currentLang==='es'?'Fecha no permitida':'Date not allowed'}</strong>${currentLang==='es'?'Mínimo 5 días hábiles. Fecha mínima:':'Min. 5 business days. Earliest date:'} ${fmtDate(minDate)}</div>`:'';
+
   const canSave = dateSet && dateValid && !blocked && f.teacher && f.startTime && f.endTime;
- 
+
   document.getElementById('sidebar-'+lab).innerHTML=`
     <div class="card">
-      <h3>Estado actual</h3>
+      <h3>${t('currentState')}</h3>
       <div class="stats">
-        <div class="stat"><div class="stat-num">${total}</div><div class="stat-label">Equipos</div></div>
-        <div class="stat"><div class="stat-num" style="color:var(--green)">${total-occ}</div><div class="stat-label">Libres</div></div>
-        <div class="stat"><div class="stat-num" style="color:var(--red)">${occ}</div><div class="stat-label">Asignados</div></div>
-        <div class="stat"><div class="stat-num">${reservations.filter(r=>r.lab===lab).length}</div><div class="stat-label">Reservas</div></div>
+        <div class="stat"><div class="stat-num">${total}</div><div class="stat-label">${t('equipment')}</div></div>
+        <div class="stat"><div class="stat-num" style="color:var(--green)">${total-occ}</div><div class="stat-label">${t('free')}</div></div>
+        <div class="stat"><div class="stat-num" style="color:var(--red)">${occ}</div><div class="stat-label">${t('assigned')}</div></div>
+        <div class="stat"><div class="stat-num">${reservations.filter(r=>r.lab===lab).length}</div><div class="stat-label">${t('reservations')}</div></div>
       </div>
     </div>
     <div class="card">
-      <h3>Nueva reserva</h3>
+      <h3>${t('newReservation')}</h3>
       <div id="blocked-banner-${lab}"></div>
-      <div class="form-row"><label>Profesor</label>
-        <input type="text" placeholder="Nombre del profesor" value="${f.teacher}"
+      <div class="form-row"><label>${t('teacher')}</label>
+        <input type="text" placeholder="${currentLang==='es'?'Nombre del profesor':'Teacher name'}" value="${f.teacher}"
           data-lab="${lab}" data-field="teacher" oninput="handleFormInput(this)"/>
       </div>
-      <div class="form-row"><label>Correo del profesor</label>
-        <input type="email" placeholder="profesor@colegio.edu" value="${f.teacherEmail}"
+      <div class="form-row"><label>${t('teacherEmail')}</label>
+        <input type="email" placeholder="${currentLang==='es'?'profesor@colegio.edu':'teacher@school.edu'}" value="${f.teacherEmail}"
           data-lab="${lab}" data-field="teacherEmail" oninput="handleFormInput(this)"/>
       </div>
-      <div class="form-row"><label>Fecha <span style="font-size:11px;color:var(--text3);">(mín. ${fmtDate(minDate)})</span></label>
+      <div class="form-row"><label>${t('date')} <span style="font-size:11px;color:var(--text3);">(${t('dateMin')} ${fmtDate(minDate)})</span></label>
         <input type="date" value="${f.date}" min="${minDate}"
           data-lab="${lab}" data-field="date" oninput="handleFormInput(this)" onchange="handleFormInput(this)"/>
       </div>
       <div class="form-row">
-        <label>Bloque horario</label>
-        <div id="blocks-selector-${lab}" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
-          <!-- Se llena dinámicamente -->
-        </div>
+        <label>${t('timeBlock')}</label>
+        <div id="blocks-selector-${lab}" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;"></div>
         <p id="blocks-msg-${lab}" style="font-size:11px;color:var(--text3);margin-top:4px;"></p>
       </div>
-      <div class="form-row"><label>Materia</label>
-        <input type="text" placeholder="Ej. Tecnología, Ingeniería..." value="${f.subject}"
+      <div class="form-row"><label>${t('subject')}</label>
+        <input type="text" placeholder="${currentLang==='es'?'Ej. Tecnología, Ingeniería...':'E.g. Technology, Engineering...'}" value="${f.subject}"
           data-lab="${lab}" data-field="subject" oninput="handleFormInput(this)"/>
       </div>
-      <div class="form-row"><label>Tema a abarcar</label>
-        <textarea placeholder="Describe el tema o actividad que se desarrollará en la sesión..." data-lab="${lab}" data-field="topic" oninput="handleFormInput(this)">${f.topic}</textarea>
+      <div class="form-row"><label>${t('topic')}</label>
+        <textarea placeholder="${currentLang==='es'?'Describe el tema o actividad...':'Describe the topic or activity...'}" data-lab="${lab}" data-field="topic" oninput="handleFormInput(this)">${f.topic}</textarea>
       </div>
-      <div class="form-row"><label>Equipos asignados</label>
+      <div class="form-row"><label>${t('assignedSeats')}</label>
         <div class="sel-info">${selHtml}</div>
       </div>
       <button class="btn btn-primary" id="btn-save-${lab}" onclick="saveReservation('${lab}')">
-        Guardar reserva
+        ${t('saveReservation')}
       </button>
     </div>`;
   setTimeout(()=>renderBlocksSelector(lab), 20);
 }
- 
+
 function handleFormInput(el){
   const lab = el.getAttribute('data-lab');
   const field = el.getAttribute('data-field');
@@ -833,14 +1012,14 @@ function handleFormInput(el){
     }
   }
 }
- 
+
 function setForm(lab, field, value){
   if(!form[lab]) return;
   form[lab][field] = value;
   if(field==='date') renderBlocksSelector(lab);
   updateSaveButton(lab);
 }
- 
+
 function renderBlocksSelector(lab){
   const f = form[lab];
   const blocks = TIME_BLOCKS[lab] || [];
@@ -848,78 +1027,78 @@ function renderBlocksSelector(lab){
   const container = document.getElementById('blocks-selector-'+lab);
   const msg = document.getElementById('blocks-msg-'+lab);
   if(!container) return;
- 
+
   if(!dateSet){
-    container.innerHTML = '<span style="font-size:12px;color:var(--text3);">Selecciona primero una fecha</span>';
+    container.innerHTML = `<span style="font-size:12px;color:var(--text3);">${t('selectDateFirst')}</span>`;
     if(msg) msg.textContent = '';
     return;
   }
- 
+
   const d = new Date(f.date+'T12:00:00');
   const jsDay = d.getDay(); // 0=dom,1=lun,...,6=sab
   const isSaturday = jsDay === 6;
   const isSunday = jsDay === 0;
   const dayIdx = jsDay===0?-1:jsDay===6?5:jsDay-1; // 0=lun..4=vie, 5=sab
- 
+
   if(isSunday){
-    container.innerHTML = '<span style="font-size:12px;color:var(--text3);">Los domingos no están disponibles para reservas.</span>';
+    container.innerHTML = `<span style="font-size:12px;color:var(--text3);">${t('sundayUnavailable')}</span>`;
     if(msg) msg.textContent = '';
     return;
   }
- 
+
   const existingThatDay = reservations.filter(r => r.lab===lab && r.date===f.date);
- 
+
   let html = '';
   let availableCount = 0;
   blocks.forEach(b => {
     // Filtrar: sábado solo muestra bloque de sábado, entre semana oculta bloque de sábado
     if(b.saturdayOnly && !isSaturday) return;
     if(!b.saturdayOnly && isSaturday) return;
- 
+
     const blocked = (!isSaturday && dayIdx>=0) ? blockedSchedules.find(bs =>
       bs.lab===lab && Number(bs.day)===dayIdx &&
       toMins(b.start) < toMins(bs.end_time) && toMins(b.end) > toMins(bs.start_time)
     ) : null;
- 
+
     const reserved = existingThatDay.find(r =>
       toMins(b.start) < toMins(r.end_time) && toMins(b.end) > toMins(r.start_time)
     );
- 
+
     const isSelected = f.startTime===b.start && f.endTime===b.end;
     const isUnavailable = blocked || reserved;
- 
+
     let style = 'padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:2px solid;transition:all .15s;';
     let title = '';
- 
+
     if(isSelected){
       style += 'background:var(--blue);color:#fff;border-color:var(--blue);';
     } else if(blocked){
       style += 'background:var(--amber-l);color:var(--amber);border-color:var(--amber-m);cursor:not-allowed;opacity:0.7;';
-      title = 'Bloqueado por clase';
+      title = t('blockedByClass');
     } else if(reserved){
       style += 'background:var(--red-l);color:var(--red);border-color:var(--red-m);cursor:not-allowed;opacity:0.7;';
-      title = 'Ya reservado: '+reserved.teacher;
+      title = t('alreadyReserved')+': '+reserved.teacher;
     } else {
       style += 'background:var(--green-l);color:var(--green);border-color:var(--green-m);';
       availableCount++;
     }
- 
+
     const clickFn = isUnavailable ? '' : `onclick="selectBlock('${lab}','${b.start}','${b.end}')"`;
     const satBadge = b.saturdayOnly ? ' 📅' : '';
     html += `<button style="${style}" title="${title}" ${clickFn}>${b.label}${blocked?' 🔒':reserved?' ❌':satBadge}</button>`;
   });
- 
-  container.innerHTML = html || '<span style="font-size:12px;color:var(--text3);">No hay bloques disponibles para este día.</span>';
-  if(msg) msg.textContent = availableCount > 0 ? availableCount+' bloque(s) disponible(s)' : '';
+
+  container.innerHTML = html || `<span style="font-size:12px;color:var(--text3);">${t('noBlocksAvailable')}</span>`;
+  if(msg) msg.textContent = availableCount > 0 ? availableCount+' '+t('blocksAvailable') : '';
 }
- 
+
 function selectBlock(lab, start, end){
   form[lab].startTime = start;
   form[lab].endTime = end;
   renderBlocksSelector(lab);
   updateSaveButton(lab);
 }
- 
+
 function updateSaveButton(lab){
   try{
     const f=form[lab];
@@ -946,7 +1125,7 @@ function updateSaveButton(lab){
     }
   }catch(e){ console.log("updateSaveButton error:",e); }
 }
- 
+
 // ════════════════════════════════════════
 // SELECCIÓN DE PC
 // ════════════════════════════════════════
@@ -973,14 +1152,14 @@ function selectPC(lab,num){
   renderModalList();
   document.getElementById('student-modal').classList.add('open');
 }
- 
+
 function setModalCat(cat,el){
   modalCatFilter=cat;
   document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   renderModalList();
 }
- 
+
 function renderModalList(){
   const q=document.getElementById('modal-search').value.toLowerCase();
   const usedIds=Object.values(assignments[modalPC.lab]).map(s=>s._id||s.id);
@@ -1000,9 +1179,9 @@ function renderModalList(){
       <span class="s-tag ${CAT_TAG_CLASS[s.category]||''}">${CAT_LABELS[s.category]||s.category}</span>
     </div>`).join('');
 }
- 
+
 function pickStudent(id){modalPicked=students.find(s=>(s._id||s.id)==id);renderModalList();}
- 
+
 function confirmStudent(){
   if(!modalPicked||!modalPC) return;
   const{lab,num,domId,key}=modalPC;
@@ -1022,19 +1201,19 @@ function closeModal(){
   document.getElementById('student-modal').classList.remove('open');
   modalPC=null; modalPicked=null;
 }
- 
+
 // ════════════════════════════════════════
 // GUARDAR RESERVA
 // ════════════════════════════════════════
 async function saveReservation(lab){
   const f=form[lab];
-  if(!f.teacher||!f.date||!f.startTime||!f.endTime){showToast('Completa nombre, fecha y horario');return;}
+  if(!f.teacher||!f.date||!f.startTime||!f.endTime){showToast(t('completeFields'));return;}
   if(!isValidReservationDate(f.date)){showToast('La fecha debe ser mínimo 5 días hábiles de anticipación');return;}
   if(!Object.keys(assignments[lab]).length){showToast('Asigna al menos un estudiante a un equipo');return;}
   // Recargar horarios bloqueados del servidor antes de validar
   try{ blockedSchedules = await api('GET','/api/schedules'); }catch(e){}
   const blocked=isBlocked(lab,f.date,f.startTime,f.endTime);
-  if(blocked){showToast('⛔ Horario bloqueado por clase: '+blocked.start_time+' – '+blocked.end_time+'. Elige otro horario.');return;}
+  if(blocked){showToast('⛔ '+t('blockedByClass')+': '+blocked.start_time+' – '+blocked.end_time);return;}
   // Verificar conflicto con reservas existentes
   const conflict = reservations.find(r =>
     r.lab===lab && r.date===f.date &&
@@ -1070,10 +1249,10 @@ async function saveReservation(lab){
     form[lab]={teacher:'',teacherEmail:'',date:'',startTime:'',endTime:'',subject:'',topic:''};
     renderSidebar(lab);
     renderBlocksSelector(lab);
-    showToast('✅ Reserva guardada — correo enviado');
+    showToast('✅ '+t('reservationSaved'));
   }catch(e){showToast(e.message);}
 }
- 
+
 // ════════════════════════════════════════
 // REPORTE
 // ════════════════════════════════════════
@@ -1096,9 +1275,9 @@ async function renderReport(){
   });
   const totalSeats=filtered.reduce((a,r)=>a+(r.seats?r.seats.length:0),0);
   document.getElementById('rep-summary').innerHTML=`
-    <div class="stat" style="padding:8px 16px;min-width:90px;"><div class="stat-num">${filtered.length}</div><div class="stat-label">Reservas</div></div>
-    <div class="stat" style="padding:8px 16px;min-width:90px;"><div class="stat-num">${totalSeats}</div><div class="stat-label">Asignaciones</div></div>
-    <div class="stat" style="padding:8px 16px;min-width:90px;"><div class="stat-num">${new Set(filtered.map(r=>r.teacher)).size}</div><div class="stat-label">Profesores</div></div>`;
+    <div class="stat" style="padding:8px 16px;min-width:90px;"><div class="stat-num">${filtered.length}</div><div class="stat-label">${t('reservations')}</div></div>
+    <div class="stat" style="padding:8px 16px;min-width:90px;"><div class="stat-num">${totalSeats}</div><div class="stat-label">${currentLang==='es'?'Asignaciones':'Assignments'}</div></div>
+    <div class="stat" style="padding:8px 16px;min-width:90px;"><div class="stat-num">${new Set(filtered.map(r=>r.teacher)).size}</div><div class="stat-label">${currentLang==='es'?'Profesores':'Teachers'}</div></div>`;
   if(!filtered.length){
     document.getElementById('rep-content').innerHTML='<div class="empty-state">No hay reservas con los filtros seleccionados</div>';
     return;
@@ -1141,7 +1320,7 @@ async function renderReport(){
       </tr>`;
     }
   });
- 
+
   document.getElementById('rep-content').innerHTML=`
     <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
       <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
@@ -1164,7 +1343,7 @@ async function renderReport(){
       <tbody>${html}</tbody>
     </table></div>`;
 }
- 
+
 function updateDeleteBtn(){
   const checked=document.querySelectorAll('.res-check:checked');
   const btn=document.getElementById('btn-delete-selected');
@@ -1177,12 +1356,12 @@ function updateDeleteBtn(){
   const allCheck=document.getElementById('check-all');
   if(allCheck) allCheck.checked=allChecks.length>0&&checked.length===allChecks.length;
 }
- 
+
 function toggleAllChecks(val){
   document.querySelectorAll('.res-check').forEach(c=>c.checked=val);
   updateDeleteBtn();
 }
- 
+
 async function deleteSelected(){
   const checked=[...document.querySelectorAll('.res-check:checked')].map(c=>c.value);
   if(!checked.length) return;
@@ -1193,17 +1372,17 @@ async function deleteSelected(){
     }
     reservations=reservations.filter(r=>!checked.includes(r._id));
     renderReport();
-    showToast('✅ '+checked.length+' reserva(s) eliminada(s)');
+    showToast('✅ '+checked.length+' '+t('deleted'));
   }catch(e){showToast(e.message);}
 }
- 
+
 async function deleteRes(id){
-  if(!confirm('¿Eliminar esta reserva?')) return;
+  if(!confirm(t('deleteConfirm'))) return;
   try{
     await api('DELETE','/api/reservations/'+id);
     reservations=reservations.filter(r=>r._id!==id);
     renderReport();
-    showToast('Reserva eliminada');
+    showToast(currentLang==='es'?'Reserva eliminada':'Reservation deleted');
   }catch(e){showToast(e.message);}
 }
 function fmtDate(d){
@@ -1211,7 +1390,7 @@ function fmtDate(d){
   const[y,m,day]=d.split('-');
   return `${day}/${m}/${y}`;
 }
- 
+
 // ════════════════════════════════════════
 // ESTUDIANTES
 // ════════════════════════════════════════
@@ -1291,7 +1470,7 @@ async function importFromExcel(input){
   }
   input.value = '';
 }
- 
+
 function showImportPreview(rows) {
   // Detect columns - look for name, category, group
   const sample = rows[0];
@@ -1302,7 +1481,7 @@ function showImportPreview(rows) {
   let catCol  = keys.find(k => /categor|tipo|type/i.test(k)) || keys[1];
   let grpCol  = keys.find(k => /grupo|grado|group|grade|curso|escuela|club/i.test(k)) || keys[2];
   let emailCol = keys.find(k => /email|correo/i.test(k)) || '';
- 
+
   // Parse students
   const parsed = rows.map(r => ({
     name:       (r[nameCol]||'').trim(),
@@ -1310,17 +1489,17 @@ function showImportPreview(rows) {
     group_name: (r[grpCol]||'').trim(),
     email:      emailCol ? (r[emailCol]||'').trim() : ''
   })).filter(s => s.name && s.category && s.group_name);
- 
+
   if(!parsed.length) {
     showToast('❌ No se encontraron datos válidos. Asegúrate de tener columnas: Nombre, Categoría (Curso/Escuela/Club), Grupo');
     return;
   }
- 
+
   // Show modal with preview
   const modal = document.getElementById('modal-overlay');
   const modalContent = document.getElementById('modal-content');
   if(!modal || !modalContent) { doImport(parsed); return; }
- 
+
   modalContent.innerHTML = `
     <h3 style="margin:0 0 12px">📥 Importar ${parsed.length} estudiante(s)</h3>
     <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">
@@ -1344,7 +1523,7 @@ function showImportPreview(rows) {
     </div>`;
   modal.style.display='flex';
 }
- 
+
 function normCategory(val) {
   const v = val.toLowerCase().trim();
   if(/cur|grad|clase|salón/.test(v)) return 'curso';
@@ -1353,7 +1532,7 @@ function normCategory(val) {
   if(v==='curso'||v==='escuela'||v==='club') return v;
   return 'curso'; // default
 }
- 
+
 async function doImport(parsed) {
   closeModal();
   let added = 0, skipped = 0;
@@ -1370,7 +1549,7 @@ async function doImport(parsed) {
   renderAdminTable();
   showToast('✅ Importados: '+added+' | Omitidos: '+skipped);
 }
- 
+
 function renderAdminTable(){
   const q=(document.getElementById('admin-search')||{value:''}).value.toLowerCase();
   const catF=(document.getElementById('admin-cat-filter')||{value:''}).value;
@@ -1444,7 +1623,7 @@ async function promoteGroup(){
     renderAdminTable(); showToast('✅ '+r.updated+' estudiante(s) actualizados a '+to);
   }catch(e){showToast(e.message);}
 }
- 
+
 // ════════════════════════════════════════
 // CONFIGURACIÓN
 // ════════════════════════════════════════
@@ -1485,7 +1664,7 @@ async function testEmail(){
     msg.innerHTML=`<div class="banner banner-red"><strong>❌ Error al enviar</strong>${e.message}</div>`;
   }
 }
- 
+
 // ════════════════════════════════════════
 // TOAST
 // ════════════════════════════════════════
@@ -1494,7 +1673,7 @@ function showToast(msg){
   t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3000);
 }
- 
+
 // ════════════════════════════════════════
 // ARRANQUE
 // ════════════════════════════════════════
@@ -1502,3 +1681,4 @@ init();
 </script>
 </body>
 </html>
+
