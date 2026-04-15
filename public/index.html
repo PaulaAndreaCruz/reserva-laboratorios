@@ -1307,9 +1307,25 @@ function renderClasses(){
         </div>
       </div>
       <p style="font-size:12px;color:var(--text2);margin-bottom:10px;">
-        Clic en un equipo para asignar estudiante. Doble clic para quitar.
+        Clic en un equipo para asignar estudiante. Clic en uno asignado para quitarlo.
       </p>
-      <div style="overflow-x:auto;">${mapHtml}</div>
+      <div style="display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start;">
+        <div style="overflow-x:auto;">${mapHtml}</div>
+        <div style="min-width:200px;max-width:240px;background:var(--bg2);border-radius:var(--r);padding:10px;border:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Lista de asignación</div>
+          ${pcs.filter(num=>seats[pref+num]).length===0
+            ? '<p style="font-size:12px;color:var(--text3);text-align:center;padding:8px 0;">Sin asignaciones aún</p>'
+            : pcs.filter(num=>seats[pref+num]).map(num=>{
+                const key=pref+num;
+                const st=seats[key];
+                return '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 6px;border-radius:5px;margin-bottom:3px;background:var(--blue-l);border:1px solid var(--blue-m);">'
+                  +'<span style="font-size:11px;font-weight:700;color:var(--blue);min-width:38px;">'+key.toUpperCase()+':</span>'
+                  +'<span style="font-size:11px;color:var(--text);flex:1;padding-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="'+st.name+'">'+st.name+'</span>'
+                +'</div>';
+              }).join('')
+          }
+        </div>
+      </div>
     </div>`;
   }).join('');
 }
