@@ -1361,7 +1361,12 @@ function selectPC(lab,num){
   const el=document.getElementById(domId);
   if(!el) return;
   if(assignments[lab][key]){
-    if(confirm('¿Quitar a '+assignments[lab][key].name+' del '+key.toUpperCase()+'?')){
+    // Show inline confirmation toast - no dialog that disrupts SVG
+    const studentName = assignments[lab][key].name;
+    if(el._removeTimeout){
+      // Second click within 2s = confirm remove
+      clearTimeout(el._removeTimeout);
+      el._removeTimeout = null;
       delete assignments[lab][key];
       const rect=el.querySelector('.pc-rect');
       const txt=el.querySelector('.pc-text');
@@ -1370,6 +1375,11 @@ function selectPC(lab,num){
         txt.setAttribute('fill','#3B6D11');txt.textContent='PC'+num;
       }
       renderSidebar(lab);
+      showToast('Quitado: '+studentName);
+    } else {
+      // First click = show warning, second click within 2s = remove
+      showToast('Clic de nuevo para quitar a '+studentName.split(' ')[0]);
+      el._removeTimeout = setTimeout(()=>{ el._removeTimeout=null; }, 2000);
     }
     return;
   }
