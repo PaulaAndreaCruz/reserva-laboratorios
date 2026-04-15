@@ -618,12 +618,12 @@ textarea{resize:vertical;min-height:70px;}
     </div>
     <div class="form-row">
       <label>Buscar estudiante</label>
-      <input type="text" id="modal-search" id="modal-search-input" placeholder="Nombre o grupo..." oninput="renderModalList()"/>
+      <input type="text" id="modal-search" placeholder="Nombre o grupo..." oninput="renderModalList()"/>
     </div>
     <div class="s-list" id="modal-list"></div>
     <div class="modal-acts">
       <button class="btn btn-cancel" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-confirm" onclick="confirmStudent()">Asignar</button>
+      <button class="btn btn-confirm" id="modal-confirm-btn" onclick="confirmStudent()">Asignar</button>
     </div>
   </div>
 </div>
@@ -1327,48 +1327,49 @@ async function clearClassSeats(classId){
 }
  
 let clsSeatModal = null;
+let modalMode = 'reservation'; // 'reservation' or 'class'
+ 
 function assignClsSeat(classId, key, lab){
-  // Check if already assigned — allow removal with second click
   const cls = myClasses.find(c=>(c._id||c.id)===classId);
-  if(cls && cls.seats && cls.seats[key]){
-    const el = document.getElementById('clsseat-'+classId+'-'+key);
-    if(el && el._removeTimeout){
-      clearTimeout(el._removeTimeout); el._removeTimeout=null;
-      cls.seats[key]=null; delete cls.seats[key];
+  if(!cls) return;
+  // If already assigned, show remove option
+  if(cls.seats && cls.seats[key]){
+    const name = cls.seats[key].name;
+    if(confirm('¿Quitar a '+name.split(' ')[0]+' de '+key.toUpperCase()+'?')){
+      delete cls.seats[key];
       api('PUT','/api/myclasses/'+classId,{seats:cls.seats}).catch(e=>console.error(e));
       renderClasses();
-      showToast('Quitado: '+key.toUpperCase());
-      return;
-    } else if(el){
-      showToast('Doble clic para quitar a '+cls.seats[key].name.split(' ')[0]);
-      el._removeTimeout=setTimeout(()=>{if(el)el._removeTimeout=null;},2000);
-      return;
+      showToast('Quitado: '+name.split(' ')[0]);
     }
+    return;
   }
+  // Open modal in class mode
   clsSeatModal = {classId, key, lab};
-  modalPicked = null; modalCatFilter = '';
-  document.getElementById('modal-title').textContent = 'Asignar a '+key.toUpperCase();
+  modalMode = 'class';
+  modalPicked = null;
+  modalCatFilter = '';
+  document.getElementById('modal-title').textContent = 'Asignar a '+key.toUpperCase()+' — '+LAB_NAMES[lab];
   document.getElementById('modal-search').value = '';
+  document.querySelectorAll('.ftab').forEach((t,i)=>{t.classList.toggle('active',i===0);});
   renderModalList();
-  document.getElementById('modal-overlay').style.display='flex';
-  document.getElementById('modal-assign-btn').onclick = confirmClsSeat;
+  document.getElementById('student-modal').classList.add('open');
 }
  
 async function confirmClsSeat(){
   if(!modalPicked||!clsSeatModal) return;
-  const {classId,key,lab} = clsSeatModal;
+  const {classId,key} = clsSeatModal;
   const cls = myClasses.find(c=>(c._id||c.id)===classId);
   if(!cls) return;
   if(!cls.seats) cls.seats={};
   cls.seats[key] = modalPicked;
   try{
     await api('PUT','/api/myclasses/'+classId,{seats:cls.seats});
+    modalMode = 'reservation';
+    clsSeatModal = null;
     closeModal();
     renderClasses();
-    showToast('✅ '+modalPicked.name.split(' ')[0]+' asignado a '+key.toUpperCase());
+    showToast('✅ '+modalPicked.name.split(' ')[0]+' → '+key.toUpperCase());
   }catch(e){ showToast(e.message); }
-  // Restore default confirm behavior
-  document.getElementById('modal-assign-btn').onclick = confirmStudent;
 }
  
 // SELECCIÓN DE PC
@@ -1442,6 +1443,8 @@ function renderModalList(){
 function pickStudent(id){modalPicked=students.find(s=>(s._id||s.id)==id);renderModalList();}
  
 function confirmStudent(){
+  // Route to correct handler based on modal mode
+  if(modalMode === 'class'){ confirmClsSeat(); return; }
   if(!modalPicked||!modalPC) return;
   const{lab,num,domId,key}=modalPC;
   assignments[lab][key]=modalPicked;
@@ -1458,7 +1461,7 @@ function confirmStudent(){
 }
 function closeModal(){
   document.getElementById('student-modal').classList.remove('open');
-  modalPC=null; modalPicked=null;
+  modalPC=null; modalPicked=null; modalMode='reservation'; clsSeatModal=null;
 }
  
 // ════════════════════════════════════════
